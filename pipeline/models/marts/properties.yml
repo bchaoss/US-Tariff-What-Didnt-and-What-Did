@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: marts
+    description: 
+    columns:
+      - name: id
+        description: 
+        tests:
+          - unique
+          - not_null
+      
+exposures:
+
+  - name: dashboard1
+    label: 
+    type: dashboard
+    maturity: high
+    url: 
+    description: 
+    depends_on:
+    owner:
+      name: Pubilc

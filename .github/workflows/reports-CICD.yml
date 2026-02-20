@@ -1,0 +1,78 @@
+name: reports_CICD
+
+env:
+  MOTHERDUCK_TOKEN: ${{ secrets.MOTHERDUCK_TOKEN }}
+  BI_PROJECT_DIR: ${{ github.workspace }}/reports
+  PAGE_DEPLOY_DIR: ${{ github.workspace }}/reports/build
+
+on:
+  workflow_run:
+    workflows: ["dbt_pipeline_cicd"]
+    types:
+      - completed
+
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'reports/**'
+    # paths-ignore:
+    #   - 'pipeline/**'
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  
+jobs:
+  build-reports:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Install Env
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: reports/package-lock.json
+
+      - name: Install npm dependencies
+        run: npm install
+        working-directory: ${{ env.BI_PROJECT_DIR }}
+
+      # Build reports
+      - name: Build reports
+        env:
+          EVIDENCE_SOURCE__token: ${{ env.MOTHERDUCK_TOKEN }}
+        run: |
+          npm run sources
+          npm run build
+        working-directory: ${{ env.BI_PROJECT_DIR }}
+      
+      # Upload artifact
+      - name: Upload documentation artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ env.PAGE_DEPLOY_DIR }}
+        
+
+  deploy-reports:
+    needs: build-reports
+    permissions:
+      pages: write      
+      id-token: write   
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:     
+      # Github Page deploy
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      
+      - name: Deploy site to GitHub Pages
+        id: deployment
+
+        uses: actions/deploy-pages@v4

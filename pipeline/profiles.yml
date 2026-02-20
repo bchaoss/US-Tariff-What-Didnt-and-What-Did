@@ -1,0 +1,9 @@
+profile_name:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "md:{{ var('db_name', 'sample_data') }}?motherduck_token={{ env_var('MOTHERDUCK_TOKEN') }}"
+      threads: 4
+      extensions:
+        - motherduck

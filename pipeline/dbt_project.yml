@@ -1,0 +1,26 @@
+name: 'dbt_project'
+version: '1.0.0'
+config-version: 2
+
+profile: 'profile_name'
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+analysis-paths: ["analyses"]
+macro-paths: ["macros"]
+
+models:
+  dbt_project:
+    ingest:
+      +materialized: table
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table
+
+seeds:
+  seeds_file_name:
+    +quote_columns: false
+
+vars:

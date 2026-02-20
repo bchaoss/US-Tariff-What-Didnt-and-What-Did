@@ -1,0 +1,27 @@
+{
+  "name": "Node + Python Feature",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:0-20-bullseye",
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.13"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "innoverio.vscode-dbt-power-user",
+        "evidence.evidence-vscode",
+        "svelte.svelte-vscode"
+      ]
+    }
+  },
+  "initializeCommand": {
+    "dbt setup": "mkdir -p /root/pipeline/.dbt && cp pipeline/profiles.yml /root/pipeline/.dbt/",
+    "bi setup": "echo \"EVIDENCE_SOURCE__token=${MOTHERDUCK_TOKEN}\" > reports/.env"
+  },
+  "postCreateCommand": {
+    "dbt dependencies": "pip install -r requirements.txt",
+    "bi dependencies": "cd reports/ && npm install && npm run sources"
+  }
+}

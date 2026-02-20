@@ -1,0 +1,30 @@
+# IDE / Environment specific files
+.env
+.vscode/
+.vscode/settings.json
+.user.yml
+*.options.yaml
+.DS_Store
+
+# Python environment files
+.venv/
+venv/
+__pycache__/
+
+# dbt generated files
+logs/
+target/
+dbt_modules/
+dbt_packages/
+dbt_internal_packages/
+
+# evidence ignore
+reports/.evidence/template
+reports/.evidence/meta
+reports/.evidence/customization/.profile.json
+reports/.svelte-kit
+reports/.env
+# reports/package-lock.json
+reports/build
+reports/node_modules
+reports/static/data
