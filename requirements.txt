@@ -1,3 +1,6 @@
 dbt-core
 duckdb
 dbt-duckdb
+
+requests
+pyarrow

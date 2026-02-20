@@ -11,6 +11,9 @@
 venv/
 __pycache__/
 
+# Temp files
+data/
+
 # dbt generated files
 logs/
 target/
