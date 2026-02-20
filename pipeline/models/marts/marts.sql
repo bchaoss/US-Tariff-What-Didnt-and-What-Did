@@ -1,6 +1,5 @@
 select 
-    row_number() as id,
+    row_number() over (order by tpep_pickup_datetime) as id,
     * 
-from who.ambient_air_quality 
-
+from sample_data.nyc.taxi
 limit 10

@@ -13,6 +13,7 @@ macro-paths: ["macros"]
 models:
   dbt_project:
     ingest:
+      # +schema: temp
       +materialized: table
     staging:
       +materialized: view
@@ -24,3 +25,4 @@ seeds:
     +quote_columns: false
 
 vars:
+  raw_data_path: "/workspaces/US-Tariff-What-didnt-or-did-do/data"

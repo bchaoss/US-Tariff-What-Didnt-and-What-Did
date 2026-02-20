@@ -2,10 +2,10 @@ version: 2
 
 models:
   - name: marts
-    description: 
+    description: 'desc'
     columns:
       - name: id
-        description: 
+        description: 'desc'
         tests:
           - unique
           - not_null
@@ -13,11 +13,11 @@ models:
 exposures:
 
   - name: dashboard1
-    label: 
+    # label: 
     type: dashboard
     maturity: high
-    url: 
-    description: 
-    depends_on:
+    # url: 
+    description: 'desc'
+    # depends_on: 
     owner:
       name: Pubilc
