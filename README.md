@@ -1,5 +1,7 @@
 # US Tariff: What didn't and what did do
 
+[reports](https://bchaoss.github.io/US-Tariff-What-Didnt-and-What-Did/)
+
 <img width="2244" height="1266" alt="image" src="https://github.com/user-attachments/assets/e53c4a9f-095f-41fc-86b0-73db94f078f2" />
 
 ## Data Source
@@ -8,6 +10,11 @@
 
 [US Census Bureau, International Trade Datasets](https://www.census.gov/data/developers/data-sets/international-trade.html)
 
+## Reference
+
+[Do Trump's Tariffs Make Sense? Douglas A.Irwin, Hayek Lecture Series](https://www.youtube.com/watch?v=rGafYjEqWWs&t=879s)
+
+[Has Trump Actually Shrunk the Trade Deficit? TLDR News Global](https://www.youtube.com/watch?v=PWV3bFIh-go&t=221s)
 
 ***
 
