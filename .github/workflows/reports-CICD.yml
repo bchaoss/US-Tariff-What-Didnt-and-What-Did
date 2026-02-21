@@ -3,7 +3,7 @@ name: reports_CICD
 env:
   MOTHERDUCK_TOKEN: ${{ secrets.MOTHERDUCK_TOKEN }}
   BI_PROJECT_DIR: ${{ github.workspace }}/reports
-  PAGE_DEPLOY_DIR: ${{ github.workspace }}/reports/build
+  PAGE_DEPLOY_DIR: ${{ github.workspace }}/reports/build/US-Tariff-What-Didnt-and-What-Did
 
 on:
   workflow_run:
@@ -76,6 +76,7 @@ jobs:
         id: deployment
 
         uses: actions/deploy-pages@v4
+
 
 
 
