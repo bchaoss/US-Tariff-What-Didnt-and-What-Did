@@ -1,0 +1,6 @@
+sources:
+  - name: raw
+    database: us_tariff  
+    schema: raw
+    tables:
+      - name: us_treasury_statement_monthly
