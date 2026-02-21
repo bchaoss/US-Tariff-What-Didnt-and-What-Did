@@ -11,7 +11,7 @@ select
   record_calendar_quarter,
   record_calendar_month,
 where 1=1
-  and record_calendar_year=2026
+  -- and record_calendar_year=2026
   and data_type_cd = 'D'
   and not ( record_type_cd = 'SL' or current_month_rcpt_outly_amt = 'null' )
 )

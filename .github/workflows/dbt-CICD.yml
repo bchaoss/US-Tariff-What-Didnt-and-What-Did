@@ -26,7 +26,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.13'
         
       - name: Install dbt dependencies
         run: pip install -r requirements.txt
@@ -37,16 +37,25 @@ jobs:
           cp ${{ env.DBT_PROJECT_DIR }}/profiles.yml ${{ env.DBT_PROFILES_DIR }}/profiles.yml
         shell: bash
 
-      - name: Run dbt deps
-        run: dbt deps
-        working-directory: ${{ env.DBT_PROJECT_DIR }}
-  
-      - name: Run dbt test
-        run: dbt test
+      - name: Set dbt target output
+        run: |
+          echo "DBT_TARGET=prod" >> $GITHUB_ENV
         working-directory: ${{ env.DBT_PROJECT_DIR }}
 
-      - name: Run dbt
-        run: dbt run
+      - name: dbt deps
+        run: dbt deps --target $DBT_TARGET
+        working-directory: ${{ env.DBT_PROJECT_DIR }}
+
+      - name: dbt compile
+        run: dbt compile --target $DBT_TARGET
+        working-directory: ${{ env.DBT_PROJECT_DIR }}
+
+      - name: dbt test
+        run: dbt test --target $DBT_TARGET
+        working-directory: ${{ env.DBT_PROJECT_DIR }}
+
+      - name: dbt run
+        run: dbt run --target $DBT_TARGET
         working-directory: ${{ env.DBT_PROJECT_DIR }}
 
       # - name: Generate dbt doc
