@@ -13,11 +13,13 @@ macro-paths: ["macros"]
 models:
   dbt_project:
     ingest:
-      # +schema: temp
+      +schema: raw
       +materialized: table
     staging:
+      +schema: stg
       +materialized: view
     marts:
+      +schema: marts
       +materialized: table
 
 seeds:
