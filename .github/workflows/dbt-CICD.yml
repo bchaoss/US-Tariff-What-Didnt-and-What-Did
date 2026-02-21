@@ -6,7 +6,7 @@ env:
   DBT_PROFILES_DIR: ${{ github.workspace }}/pipeline/.dbt
 
 on:
-  push:
+  pull_request:
     branches: [ "main" ]
     paths:
       - 'pipeline/**'
@@ -60,4 +60,5 @@ jobs:
 
       # - name: Generate dbt doc
       #   run: dbt docs generate 
+
       #   working-directory: ${{ env.DBT_PROJECT_DIR }}
