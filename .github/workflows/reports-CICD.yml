@@ -45,7 +45,7 @@ jobs:
       # Build reports
       - name: Build reports
         env:
-          EVIDENCE_SOURCE__us_tariff__token: ${{ env.MOTHERDUCK_TOKEN }}
+          EVIDENCE_SOURCE__us_tariff_dataset__token: ${{ env.MOTHERDUCK_TOKEN }}
         run: |
           npm run sources
           npm run build
@@ -76,5 +76,6 @@ jobs:
         id: deployment
 
         uses: actions/deploy-pages@v4
+
 
 
