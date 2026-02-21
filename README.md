@@ -1,5 +1,13 @@
-# Analytics Engineering Template
-Using [dbt](https://www.getdbt.com/), [duckdb](https://duckdb.org/) ([MotherDuck](https://www.motherduck.com/)) and [Evidence BI](https://github.com/evidence-dev/evidence?tab=readme-ov-file).
+# US Tariff: What didn't and what did do
+
+## Data Source
+
+[US Monthly Treasury Statement](https://fiscaldata.treasury.gov/datasets/monthly-treasury-statement/summary-of-receipts-by-source-and-outlays-by-function-of-the-u-s-government)
+
+[US Census Bureau, International Trade Datasets](https://www.census.gov/data/developers/data-sets/international-trade.html)
+
+
+***
 
 <pre>
 .
@@ -33,6 +41,8 @@ Using [dbt](https://www.getdbt.com/), [duckdb](https://duckdb.org/) ([MotherDuck
 
 ##  Get start
 
+Using [dbt](https://www.getdbt.com/), [duckdb](https://duckdb.org/) ([MotherDuck](https://www.motherduck.com/)) and [Evidence BI](https://github.com/evidence-dev/evidence?tab=readme-ov-file).
+
 Open in Github Codespace by `.devcontainer`:
 
 ### dbt Pipeline
@@ -53,6 +63,3 @@ npm run dev
 ```
 
 
-## Data Source
-
-[MTS](https://fiscaldata.treasury.gov/datasets/monthly-treasury-statement/summary-of-receipts-by-source-and-outlays-by-function-of-the-u-s-government)
