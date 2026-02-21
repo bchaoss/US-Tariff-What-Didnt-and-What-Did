@@ -10,6 +10,7 @@
     "vscode": {
       "extensions": [
         "ms-python.python",
+        "ms-toolsai.jupyter",
         "innoverio.vscode-dbt-power-user",
         "evidence.evidence-vscode",
         "svelte.svelte-vscode"
