@@ -1,7 +1,7 @@
 ---
-title: What didn't and what did the Trump's Tariff do ?
+title: What didn't and what did the Trump's Tariff do?
 ---
-to the USA and the world.
+To the USA and the world.
 
 Markdown can be used to write expressively in text.
 
@@ -12,7 +12,10 @@ Markdown can be used to write expressively in text.
 
 # What didn't the Trump's Tariffs do
 
-# What did the Trump's Tariffs do, realy?
+## Trump's tariffs did not reduce the US trade deficit of goods.
+
+
+# What did the Trump's Tariffs do, and realy?
 
 ## Trump's tariff did increase US fiscal revenue..., but
 
