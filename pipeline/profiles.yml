@@ -3,7 +3,14 @@ profile_name:
   outputs:
     dev:
       type: duckdb
-      path: "md:{{ var('db_name', 'my_db') }}?motherduck_token={{ env_var('MOTHERDUCK_TOKEN') }}"
+      path: "md:{{ var('db_name', 'us_tariff') }}?motherduck_token={{ env_var('MOTHERDUCK_TOKEN') }}"
+      threads: 4
+      extensions:
+        - motherduck
+
+    prod:
+      type: duckdb
+      path: "md:{{ var('db_name', 'us_tariff') }}?motherduck_token={{ env_var('MOTHERDUCK_TOKEN') }}"
       threads: 4
       extensions:
         - motherduck
