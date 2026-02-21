@@ -3,7 +3,7 @@ name: reports_CICD
 env:
   MOTHERDUCK_TOKEN: ${{ secrets.MOTHERDUCK_TOKEN }}
   BI_PROJECT_DIR: ${{ github.workspace }}/reports
-  PAGE_DEPLOY_DIR: ${{ github.workspace }}/reports/build
+  PAGE_DEPLOY_DIR: ${{ github.workspace }}/reports/build/US-Tariff-What-Didnt-and-What-Did
 
 on:
   workflow_run:
@@ -45,7 +45,7 @@ jobs:
       # Build reports
       - name: Build reports
         env:
-          EVIDENCE_SOURCE__token: ${{ env.MOTHERDUCK_TOKEN }}
+          EVIDENCE_SOURCE__us_tariff_dataset__token: ${{ env.MOTHERDUCK_TOKEN }}
         run: |
           npm run sources
           npm run build
@@ -76,3 +76,8 @@ jobs:
         id: deployment
 
         uses: actions/deploy-pages@v4
+
+
+
+
+

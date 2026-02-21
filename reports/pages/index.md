@@ -7,8 +7,10 @@ Markdown can be used to write expressively in text.
 
 - it supports lists,
 - **bolding**, _italics_ and `inline code`,
-- links to [external sites](https://google.com) and other [Evidence pages](/another/page)
 
+<!-- 
+- links to [external sites](https://google.com) and other [Evidence pages](/another/page)
+-->
 
 # What didn't the Trump's Tariffs do
 
@@ -87,7 +89,7 @@ Customs duties increased >$20B monthly after Jun 2025, compared with same month 
 
 <!-- 
     xFmt="mmm yyyy"
-/> -->
+-->
 
 
 ### **But it's a very small amount of total fiscal revenue of US goverment.**
