@@ -1,5 +1,5 @@
 # This file was automatically generated
-name: source_name
+name: us_tariff_dataset
 type: motherduck
 options:
-  database: sample_data
+  database: us_tariff
