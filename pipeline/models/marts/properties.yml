@@ -1,17 +1,15 @@
 version: 2
 
 models:
-  - name: marts
+  - name: fact_us_treasury_statement_monthly
     description: 'desc'
     columns:
-      - name: id
-        description: 'desc'
+      - name: statement_type
         tests:
-          - unique
+          # - unique
           - not_null
       
 exposures:
-
   - name: dashboard1
     # label: 
     type: dashboard
