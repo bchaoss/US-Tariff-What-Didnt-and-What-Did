@@ -1,7 +1,7 @@
 from marts.fact_us_treasury_statement_monthly
 select
   statement_type,
-  month_begin_date::DATE as month_begin_date,
+  month_begin_date as month_begin_date,
   month_end_date,
   record_calendar_year as cal_year,
   record_calendar_month as cal_month,
