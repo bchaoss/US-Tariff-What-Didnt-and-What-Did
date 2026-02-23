@@ -29,7 +29,7 @@ SELECT
   s.series_title,
 
 WHERE 1=1
-  and e.year >= 2025
+  and e.year >= 2023
   and sea.seasonal_text = 'Not Seasonally Adjusted'
   and ss.supersector_name = 'Manufacturing'
   and p.period <> 'M13'
