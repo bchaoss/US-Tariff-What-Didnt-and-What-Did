@@ -3,12 +3,11 @@ title: What didn't and what did the Trump's Tariff do?
 ---
 To the USA and the world.
 
+<!--
 Markdown can be used to write expressively in text.
 
 - it supports lists,
 - **bolding**, _italics_ and `inline code`,
-
-<!-- 
 - links to [external sites](https://google.com) and other [Evidence pages](/another/page)
 -->
 
@@ -19,7 +18,7 @@ Markdown can be used to write expressively in text.
 
 # What did the Trump's Tariffs do, and realy?
 
-## Trump's tariff did increase US fiscal revenue..., but
+## Well, Trump's tariffs did increase US fiscal revenue...
 
 ```sql monthly_treasury_tariff
 select 
@@ -63,10 +62,13 @@ where t.cal_year in (2025, 2026)
 order by all
 ```
 
-Customs duties increased >$20B monthly after Jun 2025, compared with same month in 2023-2024.
+Starting in March 2025, US customs duties increased, and have been >$20 billion higher per month since June 2025, compared with the 2023-2024 average for the same month.
 
 <Grid cols=2>
 <LineChart
+    title="US customs duties by month"
+    yAxisTitle="Customs duties"
+    xAxisTitle="per month"
     data={monthly_treasury_tariff_yoy}
     x="month"
     y="tariff_amount"
@@ -77,6 +79,10 @@ Customs duties increased >$20B monthly after Jun 2025, compared with same month 
 />
 
 <BarChart 
+    title="Change in US customs duties"
+    subtitle="relative to 2023-2024 average"
+    yAxisTitle="Difference from previous years"
+    xAxisTitle="per month"
     data={monthly_treasury_tariff_diff}
     x=month
     y=diff_vs_2324avg
@@ -92,7 +98,7 @@ Customs duties increased >$20B monthly after Jun 2025, compared with same month 
 -->
 
 
-### **But it's a very small amount of total fiscal revenue of US goverment.**
+### **But it is a very small share of the US government's total fiscal revenue.**
 ```sql monthly_treasury_revenue
 select 
     month_begin_date, 
