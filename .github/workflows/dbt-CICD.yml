@@ -50,12 +50,12 @@ jobs:
         run: dbt compile --target $DBT_TARGET
         working-directory: ${{ env.DBT_PROJECT_DIR }}
 
-      - name: dbt test
-        run: dbt test --target $DBT_TARGET
-        working-directory: ${{ env.DBT_PROJECT_DIR }}
-
       - name: dbt run
         run: dbt run --target $DBT_TARGET
+        working-directory: ${{ env.DBT_PROJECT_DIR }}
+
+      - name: dbt test
+        run: dbt test --target $DBT_TARGET
         working-directory: ${{ env.DBT_PROJECT_DIR }}
 
       # - name: Generate dbt doc
