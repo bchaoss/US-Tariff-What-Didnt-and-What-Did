@@ -1,8 +1,8 @@
 # US Tariff: What didn't and what did do
 
-[reports](https://bchaoss.github.io/US-Tariff-What-Didnt-and-What-Did/)
+[Please find the report here.](https://bchaoss.github.io/US-Tariff-What-Didnt-and-What-Did/)
 
-<img width="2244" height="1266" alt="image" src="https://github.com/user-attachments/assets/e53c4a9f-095f-41fc-86b0-73db94f078f2" />
+![treasury_report](./docs/images/treasury_report.jpg)
 
 ## Data Source
 
