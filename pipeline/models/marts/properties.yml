@@ -6,11 +6,25 @@ models:
     columns:
       - name: statement_type
         tests:
-          # - unique
+          - not_null
+
+  - name: dim_labor_series
+    description: 'desc'
+    columns:
+      - name: series_id
+        tests:
+          - unique
+          - not_null
+
+  - name: fact_us_manufacturing_employees_monthly
+    description: 'desc'
+    columns:
+      - name: series_id
+        tests:
           - not_null
       
 exposures:
-  - name: dashboard1
+  - name: reports
     # label: 
     type: dashboard
     maturity: high

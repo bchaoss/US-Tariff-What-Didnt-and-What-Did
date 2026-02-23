@@ -4,3 +4,17 @@ sources:
     schema: raw
     tables:
       - name: us_treasury_statement_monthly
+
+  - name: labor
+    database: us_tariff  
+    schema: labor
+    tables:
+      - name: raw_series
+      - name: raw_seasonal
+      - name: raw_period
+      - name: raw_supersector
+      - name: raw_industry
+      - name: raw_footnote
+      - name: raw_datatype
+      - name: raw_data_30a_Manufacturing_Employment
+

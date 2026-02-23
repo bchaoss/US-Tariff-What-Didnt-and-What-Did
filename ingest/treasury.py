@@ -9,7 +9,7 @@ target_name = "us_tariff.raw." + table_name
 print(target_name)
 
 
-def fetch_api_data(date_greater='2026-01-01', page_size=1000):
+def get_api_data(date_greater='2026-01-01', page_size=1000):
     baseUrl = 'https://api.fiscaldata.treasury.gov/services/api/fiscal_service'
     endpoint = '/v1/accounting/mts/mts_table_9'
     fields = ''
@@ -26,7 +26,7 @@ def fetch_api_data(date_greater='2026-01-01', page_size=1000):
     data_types = data_json['meta']['dataTypes']
     data_records = pa.Table.from_pylist(data_json['data'])
 
-    if data_json['meta']['total-pages'] != 1:
+    if data_json['meta']['total-pages'] > 1:
         raise ValueError("Not total data are be fetched.")
 
     return data_types, data_records
@@ -59,6 +59,8 @@ existing_cols = set(
     """).fetchall()
 )
 
+# print(existing_cols)
+
 # table_exists = con.execute(f"""
 #     SELECT COUNT(*)
 #     FROM information_schema.tables
@@ -66,7 +68,7 @@ existing_cols = set(
 # """).fetchone()[0] > 0
 
 if not existing_cols:
-    data_types, data_records = fetch_api_data(
+    data_types, data_records = get_api_data(
         date_greater='2023-01-01', page_size=100000)
 
     columns_sql = ",\n    ".join(
@@ -86,7 +88,7 @@ else:
         FROM {target_name}
     """).fetchone()[0]
 
-    data_types, data_records = fetch_api_data(
+    data_types, data_records = get_api_data(
         date_greater=max_date, page_size=1000)
 
     if data_records.num_rows == 0:

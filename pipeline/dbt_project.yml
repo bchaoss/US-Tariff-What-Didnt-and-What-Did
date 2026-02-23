@@ -27,4 +27,4 @@ seeds:
     +quote_columns: false
 
 vars:
-  raw_data_path: "/workspaces/US-Tariff-What-didnt-or-did-do/data"
+  raw_data_path: "/workspaces/US-Tariff-What-Didnt-and-What-Did/data"
