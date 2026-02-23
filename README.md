@@ -6,7 +6,7 @@
 
 ![treasury_report](./docs/images/labor_report.jpg)
 
-### What did the Trump's tariffs do? and the reality.
+### What did the Trump's tariffs do? and yet the reality.
 
 ![treasury_report](./docs/images/treasury_report.jpg)
 
