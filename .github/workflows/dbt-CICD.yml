@@ -6,7 +6,7 @@ env:
   DBT_PROFILES_DIR: ${{ github.workspace }}/pipeline/.dbt
 
 on:
-  pull_request:
+  push:
     branches: [ "main" ]
     paths:
       - 'pipeline/**'
