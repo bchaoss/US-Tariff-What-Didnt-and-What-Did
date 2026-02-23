@@ -1,8 +1,15 @@
 # US Tariff: What didn't and what did do
 
-[Please find the report here.](https://bchaoss.github.io/US-Tariff-What-Didnt-and-What-Did/)
+**[Please find the report here.](https://bchaoss.github.io/US-Tariff-What-Didnt-and-What-Did/)**
+
+### What didn't the Trump's tariffs do?
+
+![treasury_report](./docs/images/labor_report.jpg)
+
+### What did the Trump's tariffs do? and the reality.
 
 ![treasury_report](./docs/images/treasury_report.jpg)
+
 
 ## Data Source
 
