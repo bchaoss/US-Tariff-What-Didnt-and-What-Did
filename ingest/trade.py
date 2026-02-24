@@ -5,13 +5,15 @@ import json
 import pyarrow as pa
 
 # Configuration
+target_monthly_start = "2023-01"
 DATABASE_NAME = "us_tariff"
 SCHEMA = "raw"
 
 # target_trade_type = "imports"
 target_trade_type = "exports"
 
-target_monthly_start = "2023-01"
+table_name = f"us_{target_trade_type}_enduse_monthly"
+target_table = f"{DATABASE_NAME}.{SCHEMA}.{table_name}"
 
 
 def calc_timeout(monthly_start, by_country=False):
@@ -80,8 +82,6 @@ con = duckdb.connect(
     f"md:{DATABASE_NAME}"
 )
 
-table_name = f"raw_{target_trade_type}_enduse_monthly"
-target_table = f"{DATABASE_NAME}.{SCHEMA}.{table_name}"
 
 # Fetch Data
 data_records = get_api_data(
