@@ -38,6 +38,7 @@ jobs:
       - name: Set dbt target output
         run: |
           echo "DBT_TARGET=prod" >> $GITHUB_ENV
+          dbt debug --config-dir
         working-directory: ${{ env.DBT_PROJECT_DIR }}
 
       # - name: dbt deps
