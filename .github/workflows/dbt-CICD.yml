@@ -43,7 +43,7 @@ jobs:
 
       - name: dbt test
         run: |
-          dbt debug
+          dbt debug --target $DBT_TARGET
         # dbt test 
         #--target $DBT_TARGET
         working-directory: ${{ env.DBT_PROJECT_DIR }}
