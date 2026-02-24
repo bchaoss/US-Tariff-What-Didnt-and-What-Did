@@ -1,3 +1,5 @@
+from (
+
 from {{ref('data_manufacturing_employment')}} AS e
 left join {{ ref('dim_labor_series') }} AS s
   on e.series_id = s.series_id
@@ -36,3 +38,9 @@ WHERE 1=1
   and t.data_type_code in ('01', '06')
 
 group by all
+
+)
+
+select 
+  CONCAT(year, '-', month, '-01')::DATE AS month_begin_date,
+  *
