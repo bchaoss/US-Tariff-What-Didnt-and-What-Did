@@ -1,5 +1,5 @@
 {
-  "name": "Node + Python Feature",
+  "name": "Node + Python Features",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:0-20-bullseye",
   "features": {
     "ghcr.io/devcontainers/features/python:1": {
@@ -13,13 +13,13 @@
         "ms-toolsai.jupyter",
         "innoverio.vscode-dbt-power-user",
         "evidence.evidence-vscode",
-        "svelte.svelte-vscode"
+        "svelte.svelte-vscode",
+        "eamodio.gitlens"
       ]
     }
   },
   "initializeCommand": {
-    // "dbt setup": "mkdir -p /root/pipeline/.dbt && cp pipeline/profiles.yml /root/pipeline/.dbt/",
-    "bi setup": "echo \"EVIDENCE_SOURCE__us_tariff_dataset__token=${MOTHERDUCK_TOKEN}\" > reports/.env"
+    "bi local env setup": "echo \"EVIDENCE_SOURCE__us_tariff_dataset__token=${MOTHERDUCK_TOKEN}\" > reports/.env"
   },
   "postCreateCommand": {
     "dbt dependencies": "pip install -r requirements.txt",
