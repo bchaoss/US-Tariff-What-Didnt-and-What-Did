@@ -1,15 +1,12 @@
-name: dbt_pipeline_cicd
+name: dbt_pipeline_CICD
 
 env:
   MOTHERDUCK_TOKEN: ${{ secrets.MOTHERDUCK_TOKEN }}
   DBT_PROJECT_DIR: ${{ github.workspace }}/pipeline
-  DBT_PROFILES_DIR: ${{ github.workspace }}/pipeline/.dbt
 
 on:
   push:
-    branches: [ "main" ]
-    paths:
-      - 'pipeline/**'
+    branches: [ "test-action" ]
 
   workflow_dispatch:
 
@@ -29,26 +26,16 @@ jobs:
           python-version: '3.13'
         
       - name: Install dbt dependencies
-        run: pip install -r requirements.txt
-  
-      - name: Set up dbt profiles
-        run: |
-          mkdir -p ${{ env.DBT_PROJECT_DIR }}/.dbt
-          cp ${{ env.DBT_PROJECT_DIR }}/profiles.yml ${{ env.DBT_PROFILES_DIR }}/profiles.yml
-        shell: bash
+        run: pip install dbt-duckdb
 
       - name: Set dbt target output
         run: |
           echo "DBT_TARGET=prod" >> $GITHUB_ENV
         working-directory: ${{ env.DBT_PROJECT_DIR }}
 
-      - name: dbt deps
-        run: dbt deps --target $DBT_TARGET
-        working-directory: ${{ env.DBT_PROJECT_DIR }}
-
-      - name: dbt compile
-        run: dbt compile --target $DBT_TARGET
-        working-directory: ${{ env.DBT_PROJECT_DIR }}
+      # - name: dbt deps
+      #   run: dbt deps --target $DBT_TARGET
+      #   working-directory: ${{ env.DBT_PROJECT_DIR }}
 
       - name: dbt run
         run: dbt run --target $DBT_TARGET
@@ -59,6 +46,5 @@ jobs:
         working-directory: ${{ env.DBT_PROJECT_DIR }}
 
       # - name: Generate dbt doc
-      #   run: dbt docs generate 
-
+      #   run: dbt docs generate
       #   working-directory: ${{ env.DBT_PROJECT_DIR }}
