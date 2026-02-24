@@ -3,8 +3,8 @@
 .vscode/
 .vscode/settings.json
 .user.yml
-*.options.yaml
 .DS_Store
+bin/
 
 # Python environment files
 .venv/
@@ -20,6 +20,7 @@ target/
 dbt_modules/
 dbt_packages/
 dbt_internal_packages/
+*.options.yaml
 
 # evidence ignore
 reports/.evidence/template
