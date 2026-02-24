@@ -27,7 +27,6 @@ reports/.evidence/meta
 reports/.evidence/customization/.profile.json
 reports/.svelte-kit
 reports/.env
-# reports/package-lock.json
 reports/build
 reports/node_modules
 reports/static/data

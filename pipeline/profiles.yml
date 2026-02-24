@@ -1,4 +1,4 @@
-profile_name:
+my_profile:
   target: dev
   outputs:
     dev:

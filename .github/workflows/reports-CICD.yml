@@ -15,8 +15,6 @@ on:
     branches: [ "main" ]
     paths:
       - 'reports/**'
-    # paths-ignore:
-    #   - 'pipeline/**'
 
   workflow_dispatch:
 
@@ -74,7 +72,6 @@ jobs:
       
       - name: Deploy site to GitHub Pages
         id: deployment
-
         uses: actions/deploy-pages@v4
 
 

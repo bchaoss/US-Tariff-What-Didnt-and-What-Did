@@ -15,8 +15,6 @@ DATA_PATH = "data/ce.*"
 DATABASE_NAME = "us_tariff"
 SCHEMA = "labor"
 
-# Helper functions
-
 
 def normalize_filename(path):
     base = os.path.basename(path)

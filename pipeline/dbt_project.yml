@@ -2,7 +2,7 @@ name: 'dbt_project'
 version: '1.0.0'
 config-version: 2
 
-profile: 'profile_name'
+profile: 'my_profile'
 
 model-paths: ["models"]
 seed-paths: ["seeds"]
