@@ -11,7 +11,7 @@ Markdown can be used to write expressively in text.
 - links to [external sites](https://google.com) and other [Evidence pages](/another/page)
 -->
 
-# What didn't the Trump's Tariffs do
+# What Trump's Tariffs Didn’t Do
 
 ## Trump's tariffs did not reshore production or create jobs for the US manufacturing sector.
 
@@ -80,9 +80,9 @@ From a long-term perspective, manufacturing employment continues to decline, and
 
 ## Trump's tariffs did not reduce the US trade deficit of goods.
 
-# What did the Trump's Tariffs do, and realy?
+# What Trump's Tariffs Did Do, and Yet the Reality.
 
-## Well, Trump's tariffs did increASe US fiscal revenue...
+## Well, Trump's tariffs did increase US fiscal revenue...
 
 ```sql monthly_treASury_tariff
 select 
@@ -126,7 +126,7 @@ where t.cal_year in (2025, 2026)
 order by all
 ```
 
-Starting in March 2025, US customs duties increASed, and have been >$20 billion higher per month since June 2025, compared with the 2023-2024 average for the same month.
+Starting in March 2025, US customs duties increased, and have been >$20 billion higher per month since June 2025, compared with the 2023-2024 average for the same month.
 
 <Grid cols=2>
 <LineChart
@@ -204,7 +204,7 @@ group by all
 />
 </Grid>
 
-<!-- Within the total US fiscal revenue over year, increASed tariff only contributed 
+<!-- Within the total US fiscal revenue over year, increased tariff only contributed 
 
 <Grid cols=2>
 <LineChart
