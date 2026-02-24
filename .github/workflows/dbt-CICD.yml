@@ -29,11 +29,11 @@ jobs:
       - name: Install dbt dependencies
         run: pip install dbt-duckdb
   
-      # - name: Set up dbt profiles
-      #   run: |
-      #     mkdir -p ${{ env.DBT_PROJECT_DIR }}/.dbt
-      #     cp ${{ env.DBT_PROJECT_DIR }}/profiles.yml ${{ env.DBT_PROFILES_DIR }}/profiles.yml
-      #   shell: bash
+      - name: Set up dbt profiles
+        run: |
+          mkdir -p ${{ env.DBT_PROJECT_DIR }}/.dbt
+  # cp ${{ env.DBT_PROJECT_DIR }}/profiles.yml ${{ env.DBT_PROFILES_DIR }}/profiles.yml
+        shell: bash
 
       - name: Set dbt target output
         run: |
