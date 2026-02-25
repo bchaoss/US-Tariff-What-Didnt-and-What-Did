@@ -1,4 +1,4 @@
-{% set levels = [1,2,3,4,5] %}
+{% set levels = [1,2,3,5] %}
 
 with base AS ( from {{ ref('enduse_code_import') }} ),
 

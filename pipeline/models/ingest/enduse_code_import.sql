@@ -6,5 +6,6 @@ from read_csv(
 )
 select
     regexp_extract(content, '^([0-9]+)', 1) AS code,
-    trim(regexp_replace(content, '^[0-9]+', '')) AS description
+    TRIM(regexp_replace(content, '^[0-9]+', '')) AS description,
+    LENGTH(code)::VARCHAR AS lvl
 where regexp_matches(content, '^\s*[0-9]')
