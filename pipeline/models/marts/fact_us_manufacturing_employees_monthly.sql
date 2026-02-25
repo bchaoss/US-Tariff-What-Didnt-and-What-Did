@@ -1,6 +1,6 @@
 from (
 
-from {{ref('data_manufacturing_employment')}} AS e
+from {{ ref('data_manufacturing_employment') }} AS e
 left join {{ ref('dim_labor_series') }} AS s
   on e.series_id = s.series_id
 left join {{ source('labor', 'raw_seasonal') }} AS sea
