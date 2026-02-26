@@ -38,7 +38,7 @@ jobs:
       #   working-directory: ${{ env.DBT_PROJECT_DIR }}
 
       - name: dbt run
-        run: dbt run --target $DBT_TARGET
+        run: dbt run --target $DBT_TARGET --exclude tag:static
         working-directory: ${{ env.DBT_PROJECT_DIR }}
 
       - name: dbt test
