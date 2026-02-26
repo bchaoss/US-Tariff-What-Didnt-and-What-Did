@@ -28,6 +28,12 @@ models:
 
   - name: dim_enduse_code_import
     description: 'desc'
+  
+  - name: fact_us_trade_imports_enduse_monthly
+    description: 'desc'
+
+  - name: fact_us_trade_exports_enduse_monthly
+    description: 'desc'
 
 
 exposures:
