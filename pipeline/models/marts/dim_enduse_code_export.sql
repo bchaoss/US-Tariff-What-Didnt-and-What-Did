@@ -4,7 +4,7 @@ with base AS ( from {{ ref('enduse_code_export') }} ),
 
 codes AS (
 	select
-		{% for lvl in levels[0:4] %}
+		{% for lvl in levels[0:3] %}
 		LEFT(code, {{ lvl }}) AS eu{{ lvl }}_code,
 		{% endfor %}
 		code AS eu5_code,
