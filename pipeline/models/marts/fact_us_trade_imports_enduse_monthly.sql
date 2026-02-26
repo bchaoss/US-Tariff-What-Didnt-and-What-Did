@@ -3,7 +3,6 @@
 from {{ source('raw', 'us_trade_imports_enduse_monthly') }} a
 left join {{ ref('dim_enduse_code_import') }} c
   on a.I_ENDUSE = c.eu5_code 
-where a.comm_lvl = 'EU5'
 
 select 
   a.I_ENDUSE AS enduse_code,
@@ -20,3 +19,5 @@ select
   {% for column in ['GEN_VAL_MO', 'CON_VAL_MO', 'CAL_DUT_MO', 'CON_CHA_MO'] %}
   a.{{ column }}::DECIMAL(18,2) AS {{ column }},
   {% endfor %}
+  
+where a.comm_lvl = 'EU5'
