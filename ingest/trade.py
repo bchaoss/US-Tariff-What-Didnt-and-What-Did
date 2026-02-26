@@ -12,7 +12,7 @@ SCHEMA = "raw"
 # target_trade_type = "imports"
 target_trade_type = "exports"
 
-table_name = f"us_{target_trade_type}_enduse_monthly"
+table_name = f"us_trade_{target_trade_type}_enduse_monthly"
 target_table = f"{DATABASE_NAME}.{SCHEMA}.{table_name}"
 
 

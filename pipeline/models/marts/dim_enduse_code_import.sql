@@ -1,10 +1,10 @@
-{% set levels = [1,2,3,4,5] %}
+{% set levels = [1,2,3,5] %}
 
 with base AS ( from {{ ref('enduse_code_import') }} ),
 
 codes AS (
 	select
-		{% for lvl in levels[0:4] %}
+		{% for lvl in levels[0:3] %}
 		LEFT(code, {{ lvl }}) AS eu{{ lvl }}_code,
 		{% endfor %}
 		code AS eu5_code,

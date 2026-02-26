@@ -22,7 +22,20 @@ models:
       - name: series_id
         tests:
           - not_null
-      
+
+  - name: dim_enduse_code_export
+    description: 'desc'
+
+  - name: dim_enduse_code_import
+    description: 'desc'
+  
+  - name: fact_us_trade_imports_enduse_monthly
+    description: 'desc'
+
+  - name: fact_us_trade_exports_enduse_monthly
+    description: 'desc'
+
+
 exposures:
   - name: reports
     # label: 

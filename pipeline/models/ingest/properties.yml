@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: enduse_code_export
+    description: 'desc'
+    config:
+      tags: 'static'
+
+  - name: enduse_code_import
+    description: 'desc'
+    config:
+      tags: 'static'
