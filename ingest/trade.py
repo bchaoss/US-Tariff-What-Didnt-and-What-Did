@@ -9,11 +9,10 @@ target_monthly_start = "2023-01"
 DATABASE_NAME = "us_tariff"
 SCHEMA = "raw"
 
-# target_trade_type = "imports"
-target_trade_type = "exports"
-
-table_name = f"us_trade_{target_trade_type}_enduse_monthly"
-target_table = f"{DATABASE_NAME}.{SCHEMA}.{table_name}"
+target_trade_type_list = ["exports"]
+# target_trade_type_list = ["imports", "exports"]
+BY_COUNTRY = True
+BY_ENDUSE = True
 
 
 def calc_timeout(monthly_start, by_country=False):
@@ -21,7 +20,7 @@ def calc_timeout(monthly_start, by_country=False):
     now = datetime.now()
     month_diff = (now.year - start.year) * 12 + (now.month - start.month)
 
-    return 10 * month_diff * (10 if by_country else 1)
+    return 10 * month_diff * (50 if by_country else 1)
 
 
 def get_api_data(trade_type,
@@ -38,14 +37,14 @@ def get_api_data(trade_type,
 
     variables_list = {
         "imports": (
-            ("CTY_CODE,CTY_NAME," if by_country else "") +
             ("COMM_LVL,I_ENDUSE,I_ENDUSE_SDESC,I_ENDUSE_LDESC," if by_enduse else "") +
+            ("CTY_CODE,CTY_NAME," if by_country else "") +
             "GEN_VAL_MO,CON_VAL_MO,CAL_DUT_MO,CON_CHA_MO"
         ),
         "exports": (
-            ("CTY_CODE,CTY_NAME," if by_country else "") +
             "DF," +
             ("COMM_LVL,E_ENDUSE,E_ENDUSE_SDESC,E_ENDUSE_LDESC," if by_enduse else "") +
+            ("CTY_CODE,CTY_NAME," if by_country else "") +
             "ALL_VAL_MO"
         )
     }
@@ -82,42 +81,54 @@ con = duckdb.connect(
     f"md:{DATABASE_NAME}"
 )
 
+for target_trade_type in target_trade_type_list:
+    # Fetch Data
+    data_records = get_api_data(
+        trade_type=target_trade_type,
+        monthly_start=target_monthly_start,
+        by_country=BY_COUNTRY,
+        by_enduse=BY_ENDUSE
+    )
 
-# Fetch Data
-data_records = get_api_data(
-    trade_type=target_trade_type,
-    monthly_start=target_monthly_start,
-    # by_country=True,
-    by_enduse=True
-)
+    if data_records in ["timeout", None] or isinstance(data_records, str):
+        print("API fetch failed or returned empty.")
+        con.close()
+        exit()
 
-if data_records in ["timeout", None] or isinstance(data_records, str):
-    print("API fetch failed or returned empty.")
-    con.close()
-    exit()
+    headers = data_records[0]
+    rows = data_records[1:]
+    arrow_table = pa.Table.from_arrays(
+        [pa.array(col) for col in zip(*rows)] if rows else [],
+        names=headers
+    )
 
-headers = data_records[0]
-rows = data_records[1:]
-arrow_table = pa.Table.from_arrays(
-    [pa.array(col) for col in zip(*rows)] if rows else [],
-    names=headers
-)
+    con.register("arrow_table", arrow_table)
 
-con.register("arrow_table", arrow_table)
+    # target_table
+    table_name = f"us_trade_{target_trade_type}_enduse_monthly"
 
-try:
-    con.execute(f"""
-        CREATE OR REPLACE TABLE {target_table} AS
-        FROM arrow_table
-    """)
+    target_table_name = (f"us_trade_{target_trade_type}" +
+                         ("_enduse" if BY_ENDUSE else "") +
+                         ("_country" if BY_COUNTRY else "") +
+                         "_monthly"
+                         )
 
-    print(f"Table {target_table} created, started {target_monthly_start}.")
-except Exception as e:
-    print(f"Table creation failed: {e}")
+    target_table = f"{DATABASE_NAME}.{SCHEMA}.{target_table_name}"
+    print(target_table)
 
+    # create new tables
+    try:
+        con.execute(f"""
+            CREATE OR REPLACE TABLE {target_table} AS
+            FROM arrow_table
+        """)
 
-# Test
-result = con.execute(f"SELECT * FROM {target_table} LIMIT 1").fetchall()
-print(result)
+        print(f"Table {target_table} created, started {target_monthly_start}.")
+    except Exception as e:
+        print(f"Table creation failed: {e}")
+
+    # Test
+    result = con.execute(f"SELECT * FROM {target_table} LIMIT 1").fetchall()
+    print(result)
 
 con.close()

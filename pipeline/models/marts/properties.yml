@@ -49,6 +49,15 @@ models:
     config:
       tags: ['fact', 'trade']
 
+  - name: fact_us_trade_imports_enduse_country_monthly
+    description: 'desc'
+    config:
+      tags: ['fact', 'trade']
+
+  - name: fact_us_trade_exports_enduse_country_monthly
+    description: 'desc'
+    config:
+      tags: ['fact', 'trade']
 
 exposures:
   - name: reports
