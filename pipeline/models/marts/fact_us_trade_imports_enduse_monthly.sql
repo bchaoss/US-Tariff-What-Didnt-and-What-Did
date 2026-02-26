@@ -13,7 +13,7 @@ select
   {% endfor %}
 
   YEAR(STRPTIME(time, '%Y-%m'))  as year,
-  MONTH(STRPTIME(time, '%Y-%m')) as month,
+  substr(time, 6, 2) as month,
   STRPTIME(time || '-01', '%Y-%m-%d') as month_begin_date,
 
   {% for column in ['GEN_VAL_MO', 'CON_VAL_MO', 'CAL_DUT_MO', 'CON_CHA_MO'] %}

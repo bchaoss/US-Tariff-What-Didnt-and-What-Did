@@ -18,7 +18,7 @@ select
   CTY_NAME,
 
   YEAR(STRPTIME(time, '%Y-%m'))  as year,
-  MONTH(STRPTIME(time, '%Y-%m')) as month,
+  substr(time, 6, 2) as month,
   STRPTIME(time || '-01', '%Y-%m-%d') as month_begin_date,
 
   {% for column in ['ALL_VAL_MO'] %}
