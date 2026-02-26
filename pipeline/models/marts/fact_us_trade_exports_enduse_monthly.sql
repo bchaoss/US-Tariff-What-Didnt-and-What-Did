@@ -2,7 +2,8 @@
 
 from {{ source('raw', 'us_trade_exports_enduse_monthly') }} a
 left join {{ ref('dim_enduse_code_export') }} c
-  on a.E_ENDUSE = c.eu5_code and a.comm_lvl = 'EU5'
+  on a.E_ENDUSE = c.eu5_code 
+where a.comm_lvl = 'EU5'
 
 select 
   a.DF,
