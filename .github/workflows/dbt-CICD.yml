@@ -6,7 +6,9 @@ env:
 
 on:
   push:
-    branches: [ "test-action" ]
+    branches: [ "main" ]
+    paths:
+      - 'pipeline/**'
 
   workflow_dispatch:
 
@@ -48,3 +50,4 @@ jobs:
       # - name: Generate dbt doc
       #   run: dbt docs generate
       #   working-directory: ${{ env.DBT_PROJECT_DIR }}
+
