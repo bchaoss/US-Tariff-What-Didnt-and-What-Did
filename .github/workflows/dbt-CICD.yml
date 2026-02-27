@@ -9,6 +9,7 @@ on:
     branches: [ "main" ]
     paths:
       - 'pipeline/**'
+      - 'reports/**'
 
   workflow_dispatch:
 
@@ -16,7 +17,24 @@ permissions:
   contents: read
 
 jobs:
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      pipeline_changed: ${{ steps.filter.outputs.pipeline }}
+      reports_changed: ${{ steps.filter.outputs.reports }}
+    steps:
+      - id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            pipeline:
+              - 'pipeline/**'
+            reports:
+              - 'reports/**'
+
   run-dbt-pipeline:
+    needs: detect
+    if: needs.detect.outputs.pipeline_changed == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -64,3 +82,16 @@ jobs:
         with:
           name: previous-manifest
           path: target/manifest.json
+
+  trigger-reports-workflow:
+    needs: [detect, run-dbt-pipeline]
+    if: |
+      needs.detect.outputs.pipeline_changed == 'true' ||
+      needs.detect.outputs.reports_changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch reports workflow
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          event-type: run-reports-workflow

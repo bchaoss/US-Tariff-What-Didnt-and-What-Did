@@ -6,15 +6,8 @@ env:
   PAGE_DEPLOY_DIR: ${{ github.workspace }}/reports/build/US-Tariff-What-Didnt-and-What-Did
 
 on:
-  workflow_run:
-    workflows: ["dbt_pipeline_cicd"]
-    types:
-      - completed
-
-  push:
-    branches: [ "main" ]
-    paths:
-      - 'reports/**'
+  repository_dispatch:
+    types: [run-reports-workflow]
 
   workflow_dispatch:
 
