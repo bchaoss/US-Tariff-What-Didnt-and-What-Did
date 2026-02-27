@@ -8,6 +8,7 @@ sources:
       - name: us_trade_imports_enduse_monthly
       - name: us_trade_imports_enduse_country_monthly
       - name: us_trade_exports_enduse_country_monthly
+      - name: us_trade_exports_country_monthly
 
   - name: labor
     database: us_tariff  
