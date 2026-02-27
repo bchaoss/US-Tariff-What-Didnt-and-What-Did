@@ -17,22 +17,29 @@ Markdown can be used to write expressively in text.
 
 ### Imports
 
-See detailed US imports by end use chart [here](imports)
+See detailed US imports by end use chart [here](trade)
 
-- One time or front-tariff spike:
+- **Non-tariff related:**
     - Gold
-    - Pharma
-    - Finished metal shapes
-- No change:
+    - Petroleum
+- **Front-tariff spike:**
+    - **Pharma:**
+         Mar 2025 spike to $52B (vs ~$18-22B normal). Then reverted. And another smaller spike in Sep.
+    - **Finished metal shapes:** 
+        Significant front-run surge in Q1 2025 with 10x than 2023/24 baseline ($20-30B vs $2-3B), then crashed back after tariff affected.
+    - **Copper:**
+        Imports surged from Apr to Jul due to tariff expectations and rising copper prices. After tariffs took effect in Aug, imports returned to near-normal levels, only to rise again in Dec along with prices.
+- **Limited change:**
     - Aluminum
-    - Copper (with front-tariff spike)
-- Increase:
+    - Cell phones
+- **Structural Increase:**
     - Computers & Accessories
     - Telecom
-- Decrease:
+- **Decrease:**
     - Iron & Steel
     - Gem diamonds & stones
-- Others
+    - Consumer goods Others
+    - Industrial Others
 
 
 

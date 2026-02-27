@@ -26,8 +26,10 @@ select
     when enduse_code IN ('14200') then 'Aluminum'
     when enduse_code in ('14220') then 'Copper'
     when enduse_code IN ('15200') then 'Finished metal shapes'
+		when eu3_code IN ('100') then 'Petroleum'
     
 		when enduse_code IN ('42100', '42110') then 'Gem diamonds & stones'
+		when enduse_code IN ('41050') then 'Cell phones'
 
   	when eu3_code='213' and enduse_code!='21320' then 'Computers & Accessories' -- Computers, peripherals
 		when eu3_code='214' then 'Telecom' -- Telecommunications equipment
@@ -44,7 +46,7 @@ select
 	month_begin_date,
 	year, 
 	month,
-	concat('2026-', month, '-01')::DATE AS monthly,
+	concat('2025-', month, '-01')::DATE AS monthly,
 
 	sum(GEN_VAL_MO) as gen_value,
 	sum(CON_VAL_MO) as con_value,
