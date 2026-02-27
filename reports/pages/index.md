@@ -11,7 +11,30 @@ Markdown can be used to write expressively in text.
 - links to [external sites](https://google.com) and other [Evidence pages](/another/page)
 -->
 
-# What Trump's Tariffs Didn’t Do
+# What Trump's Tariffs Didn't Do
+
+## Did Trump's tariffs reduce the US trade deficit of goods?
+
+### Imports
+
+See detailed US imports by end use chart [here](imports)
+
+- One time or front-tariff spike:
+    - Gold
+    - Pharma
+    - Finished metal shapes
+- No change:
+    - Aluminum
+    - Copper (with front-tariff spike)
+- Increase:
+    - Computers & Accessories
+    - Telecom
+- Decrease:
+    - Iron & Steel
+    - Gem diamonds & stones
+- Others
+
+
 
 ## Trump's tariffs did not reshore production or create jobs for the US manufacturing sector.
 
@@ -78,7 +101,6 @@ From a long-term perspective, manufacturing employment continues to decline, and
 
 </Grid>
 
-## Trump's tariffs did not reduce the US trade deficit of goods.
 
 # What Trump's Tariffs Did Do, and Yet the Reality.
 
@@ -89,6 +111,7 @@ select
     month_begin_date, 
     cal_year,
     cal_month,
+    monthly,
     amount AS tariff_amount
 from monthly_treasury
 where month_begin_date>='2023-01-01'
