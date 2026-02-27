@@ -4,9 +4,9 @@ models:
   - name: enduse_code_export
     description: 'desc'
     config:
-      tags: 'static'
+      tags: ['static', 'trade']
 
   - name: enduse_code_import
     description: 'desc'
     config:
-      tags: 'static'
+      tags: ['static', 'trade']

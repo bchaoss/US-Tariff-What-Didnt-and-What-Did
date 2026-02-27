@@ -1,6 +1,6 @@
 {% set levels = [1,2,3] %}
 
-from {{ source('raw', 'us_trade_exports_enduse_monthly') }} a
+from {{ source('raw', 'us_trade_exports_enduse_country_monthly') }} a
 left join {{ ref('dim_enduse_code_export') }} c
   on a.E_ENDUSE = c.eu5_code 
 
@@ -13,6 +13,9 @@ select
   c.eu{{ lvl }}_code,
   c.eu{{ lvl }}_desc,
   {% endfor %}
+
+  CTY_CODE,
+  CTY_NAME,
 
   YEAR(STRPTIME(time, '%Y-%m'))  as year,
   substr(time, 6, 2) as month,

@@ -11,7 +11,37 @@ Markdown can be used to write expressively in text.
 - links to [external sites](https://google.com) and other [Evidence pages](/another/page)
 -->
 
-# What Trump's Tariffs Didn’t Do
+# What Trump's Tariffs Didn't Do
+
+## Did Trump's tariffs reduce the US trade deficit of goods?
+
+### Imports
+
+See detailed US imports by end use chart [here](trade)
+
+- **Non-tariff related:**
+    - Gold
+    - Petroleum
+- **Front-tariff spike:**
+    - **Pharma:**
+         Mar 2025 spike to $52B (vs ~$18-22B normal). Then reverted. And another smaller spike in Sep.
+    - **Finished metal shapes:** 
+        Significant front-run surge in Q1 2025 with 10x than 2023/24 baseline ($20-30B vs $2-3B), then crashed back after tariff affected.
+    - **Copper:**
+        Imports surged from Apr to Jul due to tariff expectations and rising copper prices. After tariffs took effect in Aug, imports returned to near-normal levels, only to rise again in Dec along with prices.
+- **Limited change:**
+    - Aluminum
+    - Cell phones
+- **Structural Increase:**
+    - Computers & Accessories
+    - Telecom
+- **Decrease:**
+    - Iron & Steel
+    - Gem diamonds & stones
+    - Consumer goods Others
+    - Industrial Others
+
+
 
 ## Trump's tariffs did not reshore production or create jobs for the US manufacturing sector.
 
@@ -21,7 +51,7 @@ select
     month_begin_date, 
     year,
     month,
-    concat('2026-', month, '-01')::DATE AS monthly,
+    monthly,
     value AS employee_amount
 from monthly_labor
 where month_begin_date>='2023-01-01'
@@ -78,38 +108,38 @@ From a long-term perspective, manufacturing employment continues to decline, and
 
 </Grid>
 
-## Trump's tariffs did not reduce the US trade deficit of goods.
 
 # What Trump's Tariffs Did Do, and Yet the Reality.
 
 ## Well, Trump's tariffs did increase US fiscal revenue...
 
-```sql monthly_treASury_tariff
+```sql monthly_treasury_tariff
 select 
     month_begin_date, 
     cal_year,
     cal_month,
+    monthly,
     amount AS tariff_amount
-from monthly_treASury
+from monthly_treasury
 where month_begin_date>='2023-01-01'
     and clASsification = 'Customs Duties'
 ```
 
-```sql monthly_treASury_tariff_yoy
+```sql monthly_treasury_tariff_yoy
 select 
     month_begin_date, 
     cal_year, 
-    concat('2026-', cal_month, '-01')::DATE AS monthly,
+    monthly,
     tariff_amount
-from ${monthly_treASury_tariff}
+from ${monthly_treasury_tariff}
 ```
 
-```sql monthly_treASury_tariff_diff
+```sql monthly_treasury_tariff_diff
 with avg_2324 AS (
     select
         cal_month,
         avg(tariff_amount) AS avg_2324
-    from ${monthly_treASury_tariff}
+    from ${monthly_treasury_tariff}
     where cal_year in (2023, 2024)
     group by all
 )
@@ -117,9 +147,9 @@ select
     t.cal_year,
     t.cal_month,
     t.month_begin_date,
-    concat('2026-', t.cal_month, '-01')::DATE AS monthly,
+    t.monthly,
     t.tariff_amount - a.avg_2324 AS diff_vs_2324avg
-from ${monthly_treASury_tariff} t
+from ${monthly_treasury_tariff} t
 left join avg_2324 a
     on t.cal_month = a.cal_month
 where t.cal_year in (2025, 2026)
@@ -133,7 +163,7 @@ Starting in March 2025, US customs duties increased, and have been >$20 billion 
     title="US customs duties by month"
     yAxisTitle="Customs duties"
     xAxisTitle="per month"
-    data={monthly_treASury_tariff_yoy}
+    data={monthly_treasury_tariff_yoy}
     x="monthly"
     y="tariff_amount"
     series="cal_year"
@@ -148,7 +178,7 @@ Starting in March 2025, US customs duties increased, and have been >$20 billion 
     subtitle="relative to 2023-2024 average"
     yAxisTitle="Difference from previous years"
     xAxisTitle="per month"
-    data={monthly_treASury_tariff_diff}
+    data={monthly_treasury_tariff_diff}
     x=monthly
     y=diff_vs_2324avg
     series=cal_year
@@ -167,7 +197,7 @@ Starting in March 2025, US customs duties increased, and have been >$20 billion 
 
 
 ### **But it is a very small share of the US government's total fiscal revenue.**
-```sql monthly_treASury_revenue
+```sql monthly_treasury_revenue
 select 
     month_begin_date, 
     cal_year,
@@ -175,26 +205,14 @@ select
     cASe when clASsification = 'Customs Duties' then clASsification
     else 'Fiscal Revenue - Others' end AS clASsification,
     sum(amount) AS tariff_amount
-from monthly_treASury
+from monthly_treasury
 where month_begin_date>='2025-01-01'
 group by all
 ```
-<!-- 
--- ```sql monthly_treASury_total_yoy
--- select 
---     month_begin_date, 
---     cal_year, 
---     concat('2026-', cal_month, '-01')::DATE AS month,
---     sum(amount) AS tariff_amount
--- from monthly_treASury
--- where month_begin_date>='2023-01-01'
--- group by all
--- ``` 
--->
 
 <Grid cols=2>
 <LineChart 
-    data={monthly_treASury_revenue}
+    data={monthly_treasury_revenue}
     x=month_begin_date
     y=tariff_amount
     series=clASsification
@@ -208,7 +226,7 @@ group by all
 
 <Grid cols=2>
 <LineChart
-    data={monthly_treASury_total_yoy}
+    data={monthly_treasury_total_yoy}
     x="month"
     y="tariff_amount"
     series="cal_year"

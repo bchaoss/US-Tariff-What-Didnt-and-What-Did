@@ -5,8 +5,11 @@ with base_data as (
     month_begin_date,
     year, 
     month,
+    concat('2026-', month, '-01')::DATE AS monthly,
+
     value as value_in_THOUSAND,
     value * 1000 as value,
+
     case when data_type = 'ALL EMPLOYEES, THOUSANDS' then 'Total Employees'
          when data_type = 'PRODUCTION AND NONSUPERVISORY EMPLOYEES, THOUSANDS' then 'Production & Non-Supervisory Employees'
     else NULL end as data_type,
@@ -18,6 +21,7 @@ non_prod AS (
     month_begin_date, 
     year, 
     month,
+    monthly,
     SUM(case when data_type = 'Total Employees' then value 
              when data_type = 'Production & Non-Supervisory Employees' then -value 
         else 0 end) AS value,
@@ -27,12 +31,12 @@ non_prod AS (
 
 from base_data
 select 
-  data_type, month_begin_date, year, month,
+  data_type, month_begin_date, year, month, monthly,
   value
 
 UNION ALL
 
 from non_prod
 select 
-  data_type, month_begin_date, year, month,
+  data_type, month_begin_date, year, month, monthly,
   value
