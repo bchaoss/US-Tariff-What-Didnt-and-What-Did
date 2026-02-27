@@ -64,6 +64,16 @@ models:
     config:
       tags: ['fact', 'trade']
 
+  - name: dim_region_lookup
+    description: 'desc'
+    config:
+      tags: ['static', 'dim', 'trade']
+    columns:
+      - name: region_code
+        tests:
+          - unique
+          - not_null
+
 exposures:
   - name: reports
     # label: 
