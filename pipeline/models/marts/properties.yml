@@ -59,6 +59,11 @@ models:
     config:
       tags: ['fact', 'trade']
 
+  - name: fact_us_trade_exports_country_monthly
+    description: 'desc'
+    config:
+      tags: ['fact', 'trade']
+
 exposures:
   - name: reports
     # label: 

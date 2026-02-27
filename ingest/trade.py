@@ -5,14 +5,17 @@ import json
 import pyarrow as pa
 
 # Configuration
-target_monthly_start = "2023-01"
+target_monthly_start = "2022-01"
 DATABASE_NAME = "us_tariff"
 SCHEMA = "raw"
 
-target_trade_type_list = ["exports"]
 # target_trade_type_list = ["imports", "exports"]
+# BY_COUNTRY = False
+# BY_ENDUSE = True
+
+target_trade_type_list = ["exports"]
 BY_COUNTRY = True
-BY_ENDUSE = True
+BY_ENDUSE = False
 
 
 def calc_timeout(monthly_start, by_country=False):

@@ -22,9 +22,9 @@ models:
       +schema: marts
       +materialized: table
 
-seeds:
-  seeds_file_name:
-    +quote_columns: false
+# seeds:
+#   seeds_file_name:
+#     +quote_columns: false
 
 vars:
   raw_data_path: "/workspaces/US-Tariff-What-Didnt-and-What-Did/data"
