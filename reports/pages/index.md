@@ -17,7 +17,9 @@ Markdown can be used to write expressively in text.
 
 ### Imports
 
-See detailed US imports by end use chart [here](trade)
+See detailed US imports by end use chart [here](us_imports).
+
+See detailed US exports by country chart [here](us_exports).
 
 - **Non-tariff related:**
     - Gold

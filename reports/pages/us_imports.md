@@ -10,7 +10,7 @@ select
 from monthly_import
 ```
 
-```sql monthly_import_multi
+```sql monthly_import_selected
 select 
 	year,
     monthly,
@@ -67,7 +67,7 @@ select
     title="US Goods Import Value"
     subtitle="by End Use"
     xAxisTitle="per month"
-    data={monthly_import_multi}
+    data={monthly_import_selected}
     x="monthly"
     y=gen_value
     series="year"
