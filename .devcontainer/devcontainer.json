@@ -18,6 +18,9 @@
       ]
     }
   },
+  "forwardPorts": [
+    3000
+  ],
   "initializeCommand": {
     "bi local env setup": "echo \"EVIDENCE_SOURCE__us_tariff_dataset__token=${MOTHERDUCK_TOKEN}\" > reports/.env"
   },
