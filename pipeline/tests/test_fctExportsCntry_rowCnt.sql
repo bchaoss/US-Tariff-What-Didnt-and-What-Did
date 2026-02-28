@@ -3,7 +3,7 @@ with a as (
 ),
 b as (
     select count(*) as cnt 
-    from {{ source('raw', 'us_trade_exports_enduse_country_monthly') }} a
+    from {{ source('raw', 'us_trade_exports_country_monthly') }} a
     where not (
         a.cty_code='-'
         OR
@@ -11,6 +11,7 @@ b as (
         OR
         a.cty_code like '%XXX'
         )
+    and a.DF <> '-'
 )
 
 select *
