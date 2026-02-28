@@ -49,13 +49,14 @@ order by 1,2
 
 ```sql monthly_import_change_ttl
 with cte AS (
-select
-    monthly,
-    sum(case when year=2025 then gen_value else 0 end) as value_25,
-    sum(case when year<>2025 then gen_value else 0 end)/2.0 as value_2324,
-from monthly_import
-where ${inputs.multi_dimensions}
-group by all
+    from monthly_import
+    select
+        monthly,
+        sum(case when year=2025 then gen_value else 0 end) as value_25,
+        sum(case when year<>2025 then gen_value else 0 end)/2.0 as value_2324,
+
+    where ${inputs.multi_dimensions}
+    group by all
 )
 from cte c
 select 
@@ -65,7 +66,6 @@ select
 ```
 <LineChart 
     title="US Goods Import Value"
-    subtitle="by End Use"
     xAxisTitle="per month"
     data={monthly_import_selected}
     x="monthly"
@@ -77,8 +77,8 @@ select
 />
 
 <BarChart 
-    title="YoY % Changes in US Goods Import Value"
-    subtitle="by End Use"
+    title="YoY % Changes in US Goods Import Value, by End Use"
+    subtitle="relative to 2023-24 avg."
     xAxisTitle="per month"
     data={monthly_import_change}
     x="monthly"

@@ -115,55 +115,11 @@ From a long-term perspective, manufacturing employment continues to decline, and
 
 ## Well, Trump's tariffs did increase US fiscal revenue...
 
-```sql monthly_treasury_tariff
-select 
-    month_begin_date, 
-    cal_year,
-    cal_month,
-    monthly,
-    amount AS tariff_amount
-from monthly_treasury
-where month_begin_date>='2023-01-01'
-    and clASsification = 'Customs Duties'
-```
-
-```sql monthly_treasury_tariff_yoy
-select 
-    month_begin_date, 
-    cal_year, 
-    monthly,
-    tariff_amount
-from ${monthly_treasury_tariff}
-```
-
-```sql monthly_treasury_tariff_diff
-with avg_2324 AS (
-    select
-        cal_month,
-        avg(tariff_amount) AS avg_2324
-    from ${monthly_treasury_tariff}
-    where cal_year in (2023, 2024)
-    group by all
-)
-select
-    t.cal_year,
-    t.cal_month,
-    t.month_begin_date,
-    t.monthly,
-    t.tariff_amount - a.avg_2324 AS diff_vs_2324avg
-from ${monthly_treasury_tariff} t
-left join avg_2324 a
-    on t.cal_month = a.cal_month
-where t.cal_year in (2025, 2026)
-order by all
-```
-
 Starting in March 2025, US customs duties increased, and have been >$20 billion higher per month since June 2025, compared with the 2023-2024 average for the same month.
 
 <Grid cols=2>
 <LineChart
-    title="US customs duties by month"
-    yAxisTitle="Customs duties"
+    title="US Customs Duties, Yearly "
     xAxisTitle="per month"
     data={monthly_treasury_tariff_yoy}
     x="monthly"
@@ -176,64 +132,119 @@ Starting in March 2025, US customs duties increased, and have been >$20 billion 
 />
 
 <BarChart 
-    title="Change in US customs duties"
+    title="Change in US Customs Duties"
     subtitle="relative to 2023-2024 average"
     yAxisTitle="Difference from previous years"
     xAxisTitle="per month"
-    data={monthly_treasury_tariff_diff}
+    data={monthly_treasury_diff_tariff}
     x=monthly
     y=diff_vs_2324avg
     series=cal_year
     type=grouped
     xFmt="mmm"
     yFmt="usd1b"
-    yGridlines=false>
+    yGridlines=false
+    colorPalette={['#45a1bf', '#236aa4']}>
     <ReferenceLine y=20000000000 hideValue/>
 </BarChart>
 
 </Grid>
 
-<!-- 
+
+### **But it is a very small share of the US government's total fiscal receipt.**
+
+<Grid cols=2>
+<AreaChart 
+    title="Share of Customs Duties in US Fiscal Receipt"
+    data={monthly_treasury_receipt_share}
+    x=month_begin_date
+    y=receipt_amount
+    series=class
     xFmt="mmm yyyy"
--->
+    yFmt="pct0"
+    yGridlines=false
+    seriesColors={{'Fiscal Revenue - Others': '#45a1bf' ,'Customs Duties': '#236aa4'}}
+    type=stacked100
+/>
+
+<BarChart
+    data={monthly_treasury_diff}
+    x=month_begin_date
+    y=diff_vs_2324avg
+    series=class
+    xFmt="mmm"
+    yFmt="usd1b"
+    yGridlines=false
+    seriesColors={{'Fiscal Revenue - Others': '#45a1bf' ,'Customs Duties': '#236aa4'}}
+/>
+</Grid>
 
 
-### **But it is a very small share of the US government's total fiscal revenue.**
-```sql monthly_treasury_revenue
+
+```sql monthly_treasury_base
 select 
     month_begin_date, 
     cal_year,
     cal_month,
-    cASe when clASsification = 'Customs Duties' then clASsification
-    else 'Fiscal Revenue - Others' end AS clASsification,
-    sum(amount) AS tariff_amount
+    monthly,
+    case when classification = 'Customs Duties' then classification
+        else 'Fiscal Receipt - Others' 
+    end AS class,
+    sum(amount) amount
 from monthly_treasury
+where month_begin_date>='2023-01-01'
+group by all
+```
+
+```sql monthly_treasury_tariff_yoy
+select
+    month_begin_date, 
+    cal_year, 
+    monthly,
+    amount AS tariff_amount
+from ${monthly_treasury_base}
+where class = 'Customs Duties'
+```
+
+```sql monthly_treasury_diff
+with avg_2324 AS (
+    select
+        cal_month,
+        class,
+        avg(amount) AS avg_2324
+    from ${monthly_treasury_base}
+    where cal_year in (2023, 2024)
+    group by all
+)
+select
+    t.cal_year,
+    t.cal_month,
+    t.month_begin_date,
+    t.monthly,
+    t.class,
+    t.amount - a.avg_2324 AS diff_vs_2324avg
+from ${monthly_treasury_base} t
+left join avg_2324 a
+    on t.cal_month = a.cal_month and t.class = a.class
+where t.cal_year in (2025, 2026)
+order by all asc
+```
+
+```monthly_treasury_diff_tariff
+select *
+from ${monthly_treasury_diff}
+where class = 'Customs Duties'
+```
+
+```sql monthly_treasury_receipt_share
+select 
+    month_begin_date,
+    cal_year,
+    cal_month,
+    class,
+    sum(amount) AS receipt_amount
+from ${monthly_treasury_base}
 where month_begin_date>='2025-01-01'
 group by all
 ```
 
-<Grid cols=2>
-<LineChart 
-    data={monthly_treasury_revenue}
-    x=month_begin_date
-    y=tariff_amount
-    series=clASsification
-    xFmt="mmm yyyy"
-    yFmt="usd0b"
-    yGridlines=false
-/>
-</Grid>
-
-<!-- Within the total US fiscal revenue over year, increased tariff only contributed 
-
-<Grid cols=2>
-<LineChart
-    data={monthly_treasury_total_yoy}
-    x="month"
-    y="tariff_amount"
-    series="cal_year"
-    xFmt="mmm"
-    yFmt="usd1b"
-    ytickmarks=true
-/>
-</Grid> -->

@@ -1,5 +1,5 @@
 # Exports
-jiuhyg
+
 ```sql monthly_export_dim
 select 
     export_type,
