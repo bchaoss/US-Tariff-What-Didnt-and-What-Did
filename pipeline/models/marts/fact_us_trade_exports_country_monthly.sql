@@ -5,7 +5,10 @@ left join {{ ref('dim_region_lookup') }} c
   on SUBSTR(a.cty_code,1,1) = c.region_code
 
 select
-  DF,
+  DF AS export_code,
+  case when DF = '1' then 'Domestic Export'
+    when DF = '2' then 'Foreign Export'
+  end AS export_type,
 
   a.CTY_CODE,
   a.CTY_NAME,
@@ -26,3 +29,4 @@ where not (
   OR
   a.cty_code like '%XXX' -- Regions
 )
+and DF <> '-'
