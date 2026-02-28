@@ -18,14 +18,9 @@
       ]
     }
   },
-  "forwardPorts": [
-    3000
-  ],
-  "initializeCommand": {
-    "bi local env setup": "echo \"EVIDENCE_SOURCE__us_tariff_dataset__token=${MOTHERDUCK_TOKEN}\" > reports/.env"
+  "containerEnv": {
+    "MOTHERDUCK_TOKEN": "${localEnv:MOTHERDUCK_TOKEN}"
   },
-  "postCreateCommand": {
-    "dbt dependencies": "pip install -r requirements.txt",
-    "bi dependencies": "cd reports/ && npm install && npm run sources"
-  }
+  "forwardPorts": [3000],
+  "postCreateCommand": "bash ./.devcontainer/setup.sh"
 }
