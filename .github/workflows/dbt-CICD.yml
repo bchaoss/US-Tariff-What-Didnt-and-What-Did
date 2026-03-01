@@ -19,16 +19,17 @@ permissions:
 jobs:
   detect:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
     outputs:
       pipeline_changed: ${{ steps.filter.outputs.pipeline }}
       reports_changed: ${{ steps.filter.outputs.reports }}
     steps:
       - name: Checkout Code
+        if: github.event_name == 'push'
         uses: actions/checkout@v4
 
       - name: Detect changes
         id: filter
+        if: github.event_name == 'push'
         uses: dorny/paths-filter@v3
         with:
           filters: |
@@ -36,6 +37,11 @@ jobs:
               - 'pipeline/**'
             reports:
               - 'reports/**'
+
+      - name: Set default outputs
+        run: |
+          echo "pipeline_changed=false" >> $GITHUB_OUTPUT
+          echo "reports_changed=false" >> $GITHUB_OUTPUT              
 
   run-dbt-pipeline:
     needs: detect
