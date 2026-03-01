@@ -24,7 +24,7 @@ group by all
 with cte AS (
 select
     monthly,
-    region,
+    country,
     sum(case when year=2025 then all_value*1.0 else 0 end) as value_25,
     sum(case when year<2025 then all_value*1.0 else 0 end)/2.0 as value_2324,
 from monthly_export
@@ -34,7 +34,7 @@ group by all
 from cte c
 select 
     monthly,
-    region,
+    country,
     value_25 - value_2324 AS change,
 
     round( (value_25 / value_2324 *1.0) - 1.0, 5) AS pct_change,
@@ -83,7 +83,7 @@ select
     data={monthly_export_change}
     x="monthly"
     y=pct_change_mixin
-    series="region"
+    series="country"
     xFmt="yyyy-mmm"
     yFmt="pct1"
     yGridlines=false

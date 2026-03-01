@@ -1,5 +1,282 @@
 # Imports
 
+- **Non-tariff related:**
+    - Gold
+    - Petroleum
+
+```sql monthly_import_Gold
+select 
+	year,
+    monthly,
+	sum(gen_value) as gen_value,
+from monthly_import
+where enduse_detail = 'Gold'
+group by all
+```
+
+```sql monthly_import_Petroleum
+select 
+	year,
+    monthly,
+	sum(gen_value) as gen_value,
+from monthly_import
+where enduse_detail = 'Petroleum'
+group by all
+```
+<Grid cols=2>
+<BarChart 
+    title="Gold"
+    yAxisTitle="Import Value"
+    xAxisTitle="per month"
+    data={monthly_import_Gold}
+    x="monthly"
+    y=gen_value
+    series="year"
+    xFmt="mmm"
+    yFmt="usd1b"
+    yGridlines=false
+    colorPalette={['#a4b3bc', '#758ea2', '#3292b2']}
+    type=grouped
+/>
+
+<LineChart 
+    title="Petroleum"
+    yAxisTitle="Import Value"
+    xAxisTitle="per month"
+    data={monthly_import_Petroleum}
+    x="monthly"
+    y=gen_value
+    series="year"
+    xFmt="mmm"
+    yFmt="usd1b"
+    yGridlines=false
+    colorPalette={['#a4b3bc', '#758ea2', '#3292b2']}
+/>
+</Grid>
+
+- **Front-tariff spike:**
+    - **Pharma:**
+         Mar 2025 spike to $52B (vs ~$18-22B normal). Then reverted. And another smaller spike in Sep.
+    - **Finished Metal Shapes:** 
+        Significant front-run surge in Q1 2025 with 10x than 2023/24 baseline ($20-30B vs $2-3B), then crashed back after tariff affected.
+    - **Copper:**
+        Imports surged from Apr to Jul due to tariff expectations and rising copper prices. After tariffs took effect in Aug, imports returned to near-normal levels, only to rise again in Dec along with prices.
+
+```sql monthly_import_Pharma
+select 
+	year,
+    monthly,
+	sum(gen_value) as gen_value,
+from monthly_import
+where enduse_detail = 'Pharma'
+group by all
+```
+
+```sql monthly_import_FinishedMetal
+select 
+	year,
+    monthly,
+	sum(gen_value) as gen_value,
+from monthly_import
+where enduse_detail = 'Finished metal shapes'
+group by all
+```
+
+```sql monthly_import_Copper
+select 
+	year,
+    monthly,
+	sum(gen_value) as gen_value,
+from monthly_import
+where enduse_detail = 'Copper'
+group by all
+```
+<Grid cols=3>
+<BarChart 
+    title="Pharma"
+    yAxisTitle="Import Value"
+    xAxisTitle="per month"
+    data={monthly_import_Pharma}
+    x="monthly"
+    y=gen_value
+    series="year"
+    xFmt="mmm"
+    yFmt="usd1b"
+    yGridlines=false
+    colorPalette={['#a4b3bc', '#758ea2', '#3292b2']}
+    type=grouped
+/>
+
+<BarChart 
+    title="Finished Metal Shapes"
+    yAxisTitle="Import Value"
+    xAxisTitle="per month"
+    data={monthly_import_FinishedMetal}
+    x="monthly"
+    y=gen_value
+    series="year"
+    xFmt="mmm"
+    yFmt="usd1b"
+    yGridlines=false
+    colorPalette={['#a4b3bc', '#758ea2', '#3292b2']}
+    type=grouped
+/>
+
+<BarChart 
+    title="Copper"
+    yAxisTitle="Import Value"
+    xAxisTitle="per month"
+    data={monthly_import_Copper}
+    x="monthly"
+    y=gen_value
+    series="year"
+    xFmt="mmm"
+    yFmt="usd1b"
+    yGridlines=false
+    colorPalette={['#a4b3bc', '#758ea2', '#3292b2']}
+    type=grouped
+/>
+</Grid>
+
+'Chemicals'
+- **Structural Increase:**
+    - Computers & Accessories
+    - Telecom
+
+```sql monthly_import_Computer
+select 
+	year,
+    monthly,
+	sum(gen_value) as gen_value,
+from monthly_import
+where enduse_detail = 'Computers & Accessories'
+group by all
+```
+
+```sql monthly_import_Telecom
+select 
+	year,
+    monthly,
+	sum(gen_value) as gen_value,
+from monthly_import
+where enduse_detail = 'Telecom'
+group by all
+```
+<Grid cols=2>
+<LineChart 
+    title="Computers & Accessories"
+    yAxisTitle="Import Value"
+    xAxisTitle="per month"
+    data={monthly_import_Computer}
+    x="monthly"
+    y=gen_value
+    series="year"
+    xFmt="mmm"
+    yFmt="usd1b"
+    yGridlines=false
+    colorPalette={['#a4b3bc', '#758ea2', '#3292b2']}
+/>
+
+<LineChart 
+    title="Telecommunications Equipment"
+    yAxisTitle="Import Value"
+    xAxisTitle="per month"
+    data={monthly_import_Telecom}
+    x="monthly"
+    y=gen_value
+    series="year"
+    xFmt="mmm"
+    yFmt="usd1b"
+    yGridlines=false
+    colorPalette={['#a4b3bc', '#758ea2', '#3292b2']}
+/>
+</Grid>
+
+- **Decrease:**
+    - Consumer goods Others
+    - Industrial Others
+    - Automotive
+    - Spotlight:
+        - Iron & Steel
+        - Gem diamonds & stones
+
+```sql monthly_import_Consumer
+select 
+	year,
+    monthly,
+	sum(gen_value) as gen_value,
+from monthly_import
+where enduse_detail = 'Consumer - Others'
+group by all
+```
+
+```sql monthly_import_Industrial
+select 
+	year,
+    monthly,
+	sum(gen_value) as gen_value,
+from monthly_import
+where enduse_detail = 'Industrial - Others'
+group by all
+```
+
+```sql monthly_import_Automotive
+select 
+	year,
+    monthly,
+	sum(gen_value) as gen_value,
+from monthly_import
+where enduse_detail = 'Automotive'
+group by all
+```
+<Grid cols=3>
+<LineChart 
+    title="Consumer Goods - Others"
+    yAxisTitle="Import Value"
+    xAxisTitle="per month"
+    data={monthly_import_Consumer}
+    x="monthly"
+    y=gen_value
+    series="year"
+    xFmt="mmm"
+    yFmt="usd1b"
+    yGridlines=false
+    colorPalette={['#a4b3bc', '#758ea2', '#3292b2']}
+/>
+
+<LineChart 
+    title="Industrial Goods - Others"
+    yAxisTitle="Import Value"
+    xAxisTitle="per month"
+    data={monthly_import_Industrial}
+    x="monthly"
+    y=gen_value
+    series="year"
+    xFmt="mmm"
+    yFmt="usd1b"
+    yGridlines=false
+    colorPalette={['#a4b3bc', '#758ea2', '#3292b2']}
+/>
+
+<LineChart 
+    title="Automotive"
+    yAxisTitle="Import Value"
+    xAxisTitle="per month"
+    data={monthly_import_Automotive}
+    x="monthly"
+    y=gen_value
+    series="year"
+    xFmt="mmm"
+    yFmt="usd1b"
+    yGridlines=false
+    colorPalette={['#a4b3bc', '#758ea2', '#3292b2']}
+/>
+</Grid>
+
+<!-- - **Limited change:**
+    - Aluminum
+    - Cell phones -->
+
 ```sql monthly_import_dim
 select 
     enduse_group,
@@ -74,6 +351,7 @@ select
     xFmt="mmm"
     yFmt="usd1b"
     yGridlines=false
+    colorPalette={['#a4b3bc', '#758ea2', '#3292b2']}
 />
 
 <BarChart 

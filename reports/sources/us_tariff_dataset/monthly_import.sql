@@ -27,6 +27,8 @@ select
     when enduse_code in ('14220') then 'Copper'
     when enduse_code IN ('15200') then 'Finished metal shapes'
 		when eu3_code IN ('100') then 'Petroleum'
+		when eu3_code = '125' then 'Chemicals'
+
     
 		when enduse_code IN ('42100', '42110') then 'Gem diamonds & stones'
 		when enduse_code IN ('41050') then 'Cell phones'

@@ -21,29 +21,76 @@ See detailed US imports by end use chart [here](us_imports).
 
 See detailed US exports by country chart [here](us_exports).
 
-- **Non-tariff related:**
-    - Gold
-    - Petroleum
-- **Front-tariff spike:**
-    - **Pharma:**
-         Mar 2025 spike to $52B (vs ~$18-22B normal). Then reverted. And another smaller spike in Sep.
-    - **Finished metal shapes:** 
-        Significant front-run surge in Q1 2025 with 10x than 2023/24 baseline ($20-30B vs $2-3B), then crashed back after tariff affected.
-    - **Copper:**
-        Imports surged from Apr to Jul due to tariff expectations and rising copper prices. After tariffs took effect in Aug, imports returned to near-normal levels, only to rise again in Dec along with prices.
-- **Limited change:**
-    - Aluminum
-    - Cell phones
-- **Structural Increase:**
-    - Computers & Accessories
-    - Telecom
-- **Decrease:**
-    - Iron & Steel
-    - Gem diamonds & stones
-    - Consumer goods Others
-    - Industrial Others
 
 
+```monthly_trade_gap
+from (
+select
+    month_begin_date,
+	year,
+    month,
+    monthly,
+    sum(gen_value) AS import_value,
+	0.0 AS export_value,
+from monthly_import
+group by all
+
+union all
+
+select
+    month_begin_date,
+	year,
+    month,
+    monthly,
+    0.0 AS import_value,
+	sum(all_value) AS export_value,
+from monthly_export
+group by all
+)
+select 
+    month_begin_date,
+	year,
+    month,
+    monthly,
+    sum(import_value) import_value,
+	sum(export_value) export_value,
+    -sum(import_value - export_value) AS gap
+group by all
+```
+
+<Grid cols=2>
+<BarChart 
+    title=""
+    subtitle=""
+    yAxisTitle=""
+    xAxisTitle="per month"
+    data={monthly_trade_gap}
+    x=monthly
+    y=gap
+    series=year
+    type=grouped
+    xFmt="mmm"
+    yFmt="usd1b"
+    yGridlines=false
+/>
+
+
+<LineChart 
+    title=""
+    subtitle=""
+    yAxisTitle=""
+    xAxisTitle="per month"
+    data={monthly_trade_gap}
+    x=month_begin_date
+    y={['import_value', 'export_value']}
+    y2=gap
+    y2SeriesType=bar
+    xFmt="mmm yyyy"
+    yFmt="usd1b"
+    y2Fmt="usd1b"
+    yGridlines=false
+/>
+</Grid>
 
 ## Trump's tariffs did not reshore production or create jobs for the US manufacturing sector.
 
