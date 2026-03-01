@@ -74,6 +74,7 @@ jobs:
           name: previous-manifest
           path: state
           run-id: ${{ vars.MANIFEST_RUN_ID }}
+          github-token: ${{ secrets.MY_PAT }}
         continue-on-error: true
 
       # - name: dbt deps
