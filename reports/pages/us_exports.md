@@ -1,40 +1,40 @@
-# Imports
+# Exports
 
-```sql monthly_import_dim
+```sql monthly_export_dim
 select 
-    enduse_group,
-    enduse,
-    enduse_detail,
+    export_type,
+    region,
+    country,
 	-- year::INT::VARCHAR as year, 
-	gen_value,
-from monthly_import
+	all_value,
+from monthly_export
 ```
 
-```sql monthly_import_multi
+```sql monthly_export_selected
 select 
-	year,
+    year,
     monthly,
-	sum(gen_value) as gen_value,
-from monthly_import
+    sum(all_value) as all_value,
+from monthly_export
 where ${inputs.multi_dimensions} 
 group by all
 ```
 
-```sql monthly_import_change
+```sql monthly_export_change
 with cte AS (
 select
     monthly,
-    enduse_detail,
-    sum(case when year=2025 then gen_value*1.0 else 0 end) as value_25,
-    sum(case when year<>2025 then gen_value*1.0 else 0 end)/2.0 as value_2324,
-from monthly_import
+    country,
+    sum(case when year=2025 then all_value*1.0 else 0 end) as value_25,
+    sum(case when year<2025 then all_value*1.0 else 0 end)/2.0 as value_2324,
+from monthly_export
 where ${inputs.multi_dimensions}
 group by all
 )
 from cte c
 select 
     monthly,
-    enduse_detail,
+    country,
     value_25 - value_2324 AS change,
 
     round( (value_25 / value_2324 *1.0) - 1.0, 5) AS pct_change,
@@ -47,13 +47,13 @@ select
 order by 1,2
 ```
 
-```sql monthly_import_change_ttl
+```sql monthly_export_change_ttl
 with cte AS (
 select
     monthly,
-    sum(case when year=2025 then gen_value else 0 end) as value_25,
-    sum(case when year<>2025 then gen_value else 0 end)/2.0 as value_2324,
-from monthly_import
+    sum(case when year=2025 then all_value else 0 end) as value_25,
+    sum(case when year<2025 then all_value else 0 end)/2.0 as value_2324,
+from monthly_export
 where ${inputs.multi_dimensions}
 group by all
 )
@@ -64,12 +64,12 @@ select
     round( (value_25 / value_2324 *1.0) - 1.0, 5) AS pct_change,
 ```
 <LineChart 
-    title="US Goods Import Value"
-    subtitle="by End Use"
+    title="US Goods Export Value"
+    subtitle="by Country"
     xAxisTitle="per month"
-    data={monthly_import_multi}
+    data={monthly_export_selected}
     x="monthly"
-    y=gen_value
+    y=all_value
     series="year"
     xFmt="mmm"
     yFmt="usd1b"
@@ -77,24 +77,24 @@ select
 />
 
 <BarChart 
-    title="YoY % Changes in US Goods Import Value"
-    subtitle="by End Use"
+    title="YoY % Changes in US Goods Export Value"
+    subtitle="by Country"
     xAxisTitle="per month"
-    data={monthly_import_change}
+    data={monthly_export_change}
     x="monthly"
     y=pct_change_mixin
-    series="enduse_detail"
+    series="country"
     xFmt="yyyy-mmm"
     yFmt="pct1"
     yGridlines=false
 >
-    <ReferencePoint data={monthly_import_change_ttl} x=monthly y=pct_change labelPosition=bottom align=right />
+    <ReferencePoint data={monthly_export_change_ttl} x=monthly y=pct_change labelPosition=bottom align=right />
 </BarChart>
 
 <DimensionGrid 
-    data={monthly_import_dim} 
-    metric='sum(gen_value)' 
+    data={monthly_export_dim} 
+    metric='sum(all_value)' 
     name=multi_dimensions 
-    limit=16
+    limit=10
     multiple
 />
