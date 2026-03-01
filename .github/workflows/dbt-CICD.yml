@@ -19,6 +19,7 @@ permissions:
 jobs:
   detect:
     runs-on: ubuntu-latest
+    if: github.event_name == 'push'
     outputs:
       pipeline_changed: ${{ steps.filter.outputs.pipeline }}
       reports_changed: ${{ steps.filter.outputs.reports }}
@@ -38,7 +39,9 @@ jobs:
 
   run-dbt-pipeline:
     needs: detect
-    if: needs.detect.outputs.pipeline_changed == 'true'
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      needs.detect.outputs.pipeline_changed == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -90,8 +93,11 @@ jobs:
   trigger-reports-workflow:
     needs: [detect, run-dbt-pipeline]
     if: |
-      needs.detect.outputs.pipeline_changed == 'true' ||
-      needs.detect.outputs.reports_changed == 'true'
+      github.event_name == 'push' &&
+      (
+        needs.detect.outputs.pipeline_changed == 'true' ||
+        needs.detect.outputs.reports_changed == 'true'
+      )
     runs-on: ubuntu-latest
     steps:
       - name: Dispatch reports workflow
