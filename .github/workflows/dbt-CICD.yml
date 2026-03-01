@@ -103,15 +103,25 @@ jobs:
           name: previous-manifest
           path: pipeline/target/manifest.json
 
+      # - name: Save manifest run_id
+      #   run: |
+      #     gh api \
+      #       -X PUT \
+      #       /repos/${{ github.repository }}/actions/variables/MANIFEST_RUN_ID \
+      #       -f name=MANIFEST_RUN_ID \
+      #       -f value=${{ github.run_id }}
+      #   env:
+      #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Save manifest run_id
-        run: |
-          gh api \
-            -X PUT \
-            /repos/${{ github.repository }}/actions/variables/MANIFEST_RUN_ID \
-            -f name=MANIFEST_RUN_ID \
-            -f value=${{ github.run_id }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api \
+            --method PUT \
+            -H "Accept: application/vnd.github+json" \
+            /repos/${{ github.repository }}/actions/variables/MANIFEST_RUN_ID \
+            -f value=${{ github.run_id }}
 
   trigger-reports-workflow:
     needs: [detect, run-dbt-pipeline]
