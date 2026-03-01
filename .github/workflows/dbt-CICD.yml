@@ -14,7 +14,8 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
+  actions: write
 
 jobs:
   detect:
@@ -23,7 +24,13 @@ jobs:
       pipeline_changed: ${{ steps.filter.outputs.pipeline }}
       reports_changed: ${{ steps.filter.outputs.reports }}
     steps:
-      - id: filter
+      - name: Checkout Code
+        if: github.event_name == 'push'
+        uses: actions/checkout@v4
+
+      - name: Detect changes
+        id: filter
+        if: github.event_name == 'push'
         uses: dorny/paths-filter@v3
         with:
           filters: |
@@ -32,9 +39,16 @@ jobs:
             reports:
               - 'reports/**'
 
+      - name: Set default outputs
+        run: |
+          echo "pipeline_changed=false" >> $GITHUB_OUTPUT
+          echo "reports_changed=false" >> $GITHUB_OUTPUT              
+
   run-dbt-pipeline:
     needs: detect
-    if: needs.detect.outputs.pipeline_changed == 'true'
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      needs.detect.outputs.pipeline_changed == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -54,10 +68,13 @@ jobs:
         working-directory: ${{ env.DBT_PROJECT_DIR }}
 
       - name: Download previous manifest
+        if: vars.MANIFEST_RUN_ID
         uses: actions/download-artifact@v4
         with:
           name: previous-manifest
-          path: state
+          path: ${{ env.DBT_PROJECT_DIR }}/state
+          run-id: ${{ vars.MANIFEST_RUN_ID }}
+          github-token: ${{ secrets.MY_PAT }}
         continue-on-error: true
 
       # - name: dbt deps
@@ -77,17 +94,33 @@ jobs:
       #   run: dbt docs generate
       #   working-directory: ${{ env.DBT_PROJECT_DIR }}
 
+
+      # Upload dbt state manifest
       - name: Upload manifest
         uses: actions/upload-artifact@v4
         with:
           name: previous-manifest
-          path: target/manifest.json
+          path: pipeline/target/manifest.json
+
+      - name: Save manifest run_id
+        if: vars.MANIFEST_RUN_ID
+        env:
+          GH_TOKEN: ${{ secrets.MY_PAT }}
+        run: |
+          gh api \
+            --method PATCH \
+            -H "Accept: application/vnd.github+json" \
+            /repos/${{ github.repository }}/actions/variables/MANIFEST_RUN_ID \
+            -f value=${{ github.run_id }}
 
   trigger-reports-workflow:
     needs: [detect, run-dbt-pipeline]
     if: |
-      needs.detect.outputs.pipeline_changed == 'true' ||
-      needs.detect.outputs.reports_changed == 'true'
+      github.event_name == 'push' &&
+      (
+        needs.detect.outputs.pipeline_changed == 'true' ||
+        needs.detect.outputs.reports_changed == 'true'
+      )
     runs-on: ubuntu-latest
     steps:
       - name: Dispatch reports workflow
