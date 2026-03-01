@@ -54,13 +54,13 @@ jobs:
 
       - name: Check token permissions
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.MY_PAT }}
         run: |
           gh api /repos/${{ github.repository }} --jq '.permissions'
 
       - name: Save manifest run_id
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.MY_PAT }}
         run: |
           gh api \
             --method PATCH \
