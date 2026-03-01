@@ -51,8 +51,12 @@ jobs:
       needs.detect.outputs.pipeline_changed == 'true'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+
+      - name: Check token permissions
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api /repos/${{ github.repository }} --jq '.permissions'
 
       - name: Save manifest run_id
         env:
@@ -63,6 +67,10 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             /repos/${{ github.repository }}/actions/variables/MANIFEST_RUN_ID \
             -f value=${{ github.run_id }}
+
+
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
