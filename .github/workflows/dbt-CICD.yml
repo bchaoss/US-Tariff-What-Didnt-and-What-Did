@@ -23,7 +23,11 @@ jobs:
       pipeline_changed: ${{ steps.filter.outputs.pipeline }}
       reports_changed: ${{ steps.filter.outputs.reports }}
     steps:
-      - id: filter
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Detect changes
+        id: filter
         uses: dorny/paths-filter@v3
         with:
           filters: |
