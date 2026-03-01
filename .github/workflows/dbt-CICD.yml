@@ -15,6 +15,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   detect:
@@ -67,11 +68,13 @@ jobs:
         working-directory: ${{ env.DBT_PROJECT_DIR }}
 
       - name: Download previous manifest
+        if: vars.MANIFEST_RUN_ID
         uses: actions/download-artifact@v4
         with:
           name: previous-manifest
           path: state
-        continue-on-error: true
+          run-id: ${{ vars.MANIFEST_RUN_ID }}
+        continue-on-error: false
 
       # - name: dbt deps
       #   run: dbt deps --target $DBT_TARGET
@@ -90,11 +93,25 @@ jobs:
       #   run: dbt docs generate
       #   working-directory: ${{ env.DBT_PROJECT_DIR }}
 
+      # Upload dbt state manifest
+      - name: Setup GitHub CLI
+        run: sudo apt-get install gh -y
+
       - name: Upload manifest
         uses: actions/upload-artifact@v4
         with:
           name: previous-manifest
           path: pipeline/target/manifest.json
+
+      - name: Save manifest run_id
+        run: |
+          gh api \
+            -X PUT \
+            /repos/${{ github.repository }}/actions/variables/MANIFEST_RUN_ID \
+            -f name=MANIFEST_RUN_ID \
+            -f value=${{ github.run_id }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   trigger-reports-workflow:
     needs: [detect, run-dbt-pipeline]
