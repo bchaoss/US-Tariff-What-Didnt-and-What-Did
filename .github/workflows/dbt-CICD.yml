@@ -51,24 +51,6 @@ jobs:
       needs.detect.outputs.pipeline_changed == 'true'
     runs-on: ubuntu-latest
     steps:
-
-      - name: Check token permissions
-        env:
-          GH_TOKEN: ${{ secrets.MY_PAT }}
-        run: |
-          gh api /repos/${{ github.repository }} --jq '.permissions'
-
-      - name: Save manifest run_id
-        env:
-          GH_TOKEN: ${{ secrets.MY_PAT }}
-        run: |
-          gh api \
-            --method PATCH \
-            -H "Accept: application/vnd.github+json" \
-            /repos/${{ github.repository }}/actions/variables/MANIFEST_RUN_ID \
-            -f value=${{ github.run_id }}
-
-
       - name: Checkout Code
         uses: actions/checkout@v4
 
@@ -92,7 +74,7 @@ jobs:
           name: previous-manifest
           path: state
           run-id: ${{ vars.MANIFEST_RUN_ID }}
-        continue-on-error: false
+        continue-on-error: true
 
       # - name: dbt deps
       #   run: dbt deps --target $DBT_TARGET
@@ -111,8 +93,6 @@ jobs:
       #   run: dbt docs generate
       #   working-directory: ${{ env.DBT_PROJECT_DIR }}
 
-      # - name: Setup GitHub CLI
-      #   run: sudo apt-get install gh -y
 
       # Upload dbt state manifest
       - name: Upload manifest
@@ -121,26 +101,16 @@ jobs:
           name: previous-manifest
           path: pipeline/target/manifest.json
 
-      # - name: Save manifest run_id
-      #   run: |
-      #     gh api \
-      #       -X PUT \
-      #       /repos/${{ github.repository }}/actions/variables/MANIFEST_RUN_ID \
-      #       -f name=MANIFEST_RUN_ID \
-      #       -f value=${{ github.run_id }}
-      #   env:
-      #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # - name: Save manifest run_id
-      #   env:
-      #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     token: ${{ secrets.GITHUB_TOKEN }}
-      #   run: |
-      #     gh api \
-      #       --method PUT \
-      #       -H "Accept: application/vnd.github+json" \
-      #       /repos/${{ github.repository }}/actions/variables/MANIFEST_RUN_ID \
-      #       -f value=${{ github.run_id }}
+      - name: Save manifest run_id
+        if: vars.MANIFEST_RUN_ID
+        env:
+          GH_TOKEN: ${{ secrets.MY_PAT }}
+        run: |
+          gh api \
+            --method PATCH \
+            -H "Accept: application/vnd.github+json" \
+            /repos/${{ github.repository }}/actions/variables/MANIFEST_RUN_ID \
+            -f value=${{ github.run_id }}
 
   trigger-reports-workflow:
     needs: [detect, run-dbt-pipeline]
