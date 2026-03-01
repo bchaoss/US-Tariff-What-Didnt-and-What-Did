@@ -72,7 +72,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: previous-manifest
-          path: state
+          path: ${{ env.DBT_PROJECT_DIR }}/state
           run-id: ${{ vars.MANIFEST_RUN_ID }}
           github-token: ${{ secrets.MY_PAT }}
         continue-on-error: true
