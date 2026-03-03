@@ -7,7 +7,7 @@ select
     when eu1_code = '2' then 'Capital Goods'
     when eu1_code = '3' then 'Automotive'
     when eu1_code = '4' then 'Consumer'
-		else eu1_desc 
+		else eu1_desc
 	end AS enduse_group,
 
 	case 
@@ -15,23 +15,22 @@ select
     when enduse_code = '40100' then 'Pharma'
     when eu1_code = '1' then concat(enduse_group, ' (ex-Gold)')
     when eu1_code = '4' then concat(enduse_group, ' (ex-Pharma)')
-		else enduse_group 
+		else enduse_group
 	end AS enduse,
 
 	case
 		when enduse_code = '14270' then 'Gold'
     when enduse_code = '40100' then 'Pharma'
     
-    when enduse_code IN ('14000','14100','15000','15100') then 'Iron & Steel'
-    when enduse_code IN ('14200') then 'Aluminum'
+    -- when enduse_code IN ('14000','14100','15000','15100') then 'Iron & Steel'
+    -- when enduse_code IN ('14200') then 'Aluminum'
     when enduse_code in ('14220') then 'Copper'
     when enduse_code IN ('15200') then 'Finished metal shapes'
 		when eu3_code IN ('100') then 'Petroleum'
-		when eu3_code = '125' then 'Chemicals'
-
+		-- when eu3_code = '125' then 'Chemicals'
     
-		when enduse_code IN ('42100', '42110') then 'Gem diamonds & stones'
-		when enduse_code IN ('41050') then 'Cell phones'
+		-- when enduse_code IN ('42100', '42110') then 'Gem diamonds & stones'
+		-- when enduse_code IN ('41050') then 'Cell phones'
 
   	when eu3_code='213' and enduse_code!='21320' then 'Computers & Accessories' -- Computers, peripherals
 		when eu3_code='214' then 'Telecom' -- Telecommunications equipment
@@ -40,10 +39,12 @@ select
     else enduse_group
 	end AS enduse_detail,
 
-	eu1_desc,
-	eu2_desc,
-	eu3_desc,
-	enduse_desc as eu5_desc,
+	case when enduse_detail in ('Gold', 'Petroleum') then 'Non-Tariff Drivers'
+		when enduse_detail in ('Pharma', 'Finished metal shapes', 'Copper') then 'Front-loading'
+		when enduse_detail in ('Computers & Accessories', 'Telecom') then 'Structural Increase'
+		when eu1_code in ('3', '4') then 'Consumer & Automotive *'
+		else 'Others (Industrial, Capital Goods, Foods & Bev)'
+	end AS role,
 
 	month_begin_date,
 	year, 

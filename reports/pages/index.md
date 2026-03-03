@@ -15,15 +15,49 @@ Markdown can be used to write expressively in text.
 
 ## Did Trump's tariffs reduce the US trade deficit of goods?
 
-### Imports
+The US trade deficit fluctuated significantly throughout 2025.
 
-See detailed US imports by end use chart [here](us_imports).
+<Grid cols=2>
+<LineChart 
+    title="US Intl. Trade of Goods"
+    subtitle=""
+    yAxisTitle="value in USD"
+    xAxisTitle="per month"
+    data={monthly_trade_deficit}
+    x=month_begin_date
+    y={['import', 'export']}
+    y2=deficit
+    y2SeriesType=bar
+    xFmt="mmm yyyy"
+    yFmt="usd1b"
+    y2Fmt="usd1b"
+    yGridlines=false
+    y2Gridlines=false
+    seriesColors={{'import': '#f4a261', 'export': '#3292b2', 'deficit': '#f4a261'}}
+    chartAreaHeight=240
+/>
+</Grid>
 
-See detailed US exports by country chart [here](us_exports).
+On a seasonal year-over-year comparison: the deficit surged in Q1 as businesses adopted a "pre-tariff" purchasing strategy; then, despite the tariffs taking effect in April, the deficit remained consistent with historical levels; until a second wave of large-scale tariffs in August caused the deficit to fall below historical benchmarks.
 
+<Grid cols=2>
+<BarChart 
+    title="US Intl. Trade Deficit of Goods, Yearly Comparison"
+    subtitle=""
+    xAxisTitle="per month"
+    data={monthly_trade_deficit}
+    x=monthly
+    y=deficit
+    series=year
+    type=grouped
+    xFmt="mmm"
+    yFmt="usd1b"
+    yGridlines=false
+    chartAreaHeight=240
+/>
+</Grid>
 
-
-```monthly_trade_gap
+```monthly_trade_deficit
 from (
 select
     month_begin_date,
@@ -52,110 +86,99 @@ select
 	year,
     month,
     monthly,
-    sum(import_value) import_value,
-	sum(export_value) export_value,
-    -sum(import_value - export_value) AS gap
+    sum(import_value) AS import,
+	sum(export_value) AS export,
+    -sum(import_value - export_value) AS deficit
 group by all
 ```
 
-<Grid cols=2>
+To better understand these dynamics, we should break down the import and export values separately.
+
+### Imports
+
+There are several distinct factors shaped US import trend in 2025:
+
+- Non-Tariff Drivers: Golds (spikes in Jan & Jul); Petroleum (continuous decline due to low crude oil prices);
+- Front-loading (surge in pre-tariff -> back to baseline): Pharma (Q1); Finished metal shapes (Q1); Copper (Apr - Aug);
+- Structural Increases: Computers (tariff-exempted) & Telecommunications equipment's strong growth. 
+    <Note>(It's likely driven by demand for AI infrastructure, as cell-phones which are also tariff-exempted, saw anegative YoY.)</Note>
+
 <BarChart 
-    title=""
-    subtitle=""
-    yAxisTitle=""
+    title="YoY $Changes in US Goods Import Value, by Reason"
+    subtitle="relative to 2023-24 avg."
     xAxisTitle="per month"
-    data={monthly_trade_gap}
-    x=monthly
-    y=gap
-    series=year
-    type=grouped
-    xFmt="mmm"
+    data={monthly_import_change}
+    x="monthly"
+    y=change
+    series="reason"
+    seriesOrder={['Non-Tariff Drivers', 'Front-loading', 'Structural Increase', 'Consumer & Automotive *', 'Others (Industrial, Capital Goods, Foods & Bev)']}
+    seriesColors={{
+        'Non-Tariff Drivers': '#8dacbf', 
+        'Front-loading': '#a4b3bc', 
+        'Structural Increase': '#3292b2', 
+        'Consumer & Automotive *': '#f4a261', 
+        'Others (Industrial, Capital Goods, Foods & Bev)': '#a5cdee'}}
+    xFmt="yyyy-mmm"
     yFmt="usd1b"
     yGridlines=false
-/>
+    chartAreaHeight=260
+>
+    <ReferencePoint data={monthly_import_change_ttl} x=monthly y=change labelPosition=bottom align=right />
+</BarChart>
 
+Apart from the above, US imports of most consumer goods and automotive declined significantly under tariff pressure. Conversely, industrial, capital goods, and food categories swere affected to a limited extent.
 
-<LineChart 
-    title=""
-    subtitle=""
-    yAxisTitle=""
-    xAxisTitle="per month"
-    data={monthly_trade_gap}
-    x=month_begin_date
-    y={['import_value', 'export_value']}
-    y2=gap
-    y2SeriesType=bar
-    xFmt="mmm yyyy"
-    yFmt="usd1b"
-    y2Fmt="usd1b"
-    yGridlines=false
-/>
-</Grid>
-
-## Trump's tariffs did not reshore production or create jobs for the US manufacturing sector.
-
-```sql monthly_employees_mfg
-select 
-    data_type,
-    month_begin_date, 
-    year,
-    month,
+```sql monthly_import_change
+with cte AS (
+select
     monthly,
-    value AS employee_amount
-from monthly_labor
-where month_begin_date>='2023-01-01'
+    role,
+    sum(case when year=2025 then gen_value*1.0 else 0 end) as value_25,
+    sum(case when year<2025 then gen_value*1.0 else 0 end)/2.0 as value_2324,
+from monthly_import
+where 1=1
+group by all
+)
+from cte c
+select 
+    monthly,
+    role AS reason,
+    value_25 - value_2324 AS change,
+
+    round( (value_25 / value_2324 *1.0) - 1.0, 5) AS pct_change,
+
+    value_2324,
+    SUM(value_2324) OVER (PARTITION BY monthly) as enduse_ttl,
+    value_2324 / SUM(value_2324) OVER (PARTITION BY monthly) AS mix_byenduse,
+
+    round( (value_25 / value_2324 *1.0) - 1.0, 5) * (value_2324 / SUM(value_2324) OVER (PARTITION BY monthly)) AS pct_change_mixin,
+order by 1,2
 ```
 
-```sql monthly_employees_mfg_prod
-from ${monthly_employees_mfg}
-where year>=2024
-    and data_type = 'Production & Non-Supervisory Employees'
-order by 1,2 desc
+```sql monthly_import_change_ttl
+with cte AS (
+    from monthly_import
+    select
+        monthly,
+        sum(case when year=2025 then gen_value else 0 end) as value_25,
+        sum(case when year<>2025 then gen_value else 0 end)/2.0 as value_2324,
+    where 1=1
+    group by all
+)
+from cte c
+select 
+    monthly,
+    value_25 - value_2324 AS change,
+    round( (value_25 / value_2324 *1.0) - 1.0, 5) AS pct_change,
 ```
 
-```sql monthly_employees_mfg_prod_non
-from ${monthly_employees_mfg}
-where year>=2024
-    and data_type = 'Non-Production Employees'
-order by 1,2 desc
-```
 
-There is no sign of employment revival in US manufacturing, whether in total staffing or among production employees. 
+See the details about US import trends [here](us_imports).
 
-From a long-term perspective, manufacturing employment continues to decline, and the decline is more notably for production employees.
+### Exports
 
-<Grid cols=2>
-<LineChart
-    title="Production & Non-Supervisory Employees, in US Manufacturing"
-    yAxisTitle="Employees"
-    data={monthly_employees_mfg_prod}
-    x="month_begin_date"
-    y="employee_amount"
-    series=data_type
-    xFmt="mmm yyyy"
-    yFmt="num1m"
-    yGridlines=false
-    yBaseline=true
-    yMin=8000000
-    chartAreaHeight=220
-/>
 
-<LineChart
-    title="Non-Production or Supervisory Employees, in US Manufacturing"
-    yAxisTitle="Employees"
-    data={monthly_employees_mfg_prod_non}
-    x="month_begin_date"
-    y="employee_amount"
-    series=data_type
-    xFmt="mmm yyyy"
-    yFmt="num1m"
-    yGridlines=false
-    yBaseline=true
-    yMin=3000000
-    chartAreaHeight=220
-/>
-
-</Grid>
+See detailed US exports by country chart [here](us_exports).
 
 
 # What Trump's Tariffs Did Do, and Yet the Reality.
@@ -198,7 +221,9 @@ Starting in March 2025, US customs duties increased, and have been >$20 billion 
 </Grid>
 
 
-### **But it is a very small share of the US government's total fiscal receipt.**
+### **It accounts for a small share of the US government's total fiscal receipts.**
+
+Though the threefold increase in collections has made tariffs become a primary source of fiscal growth.
 
 <Grid cols=2>
 <AreaChart 
@@ -293,5 +318,6 @@ select
 from ${monthly_treasury_base}
 where month_begin_date>='2025-01-01'
 group by all
+order by class
 ```
 
