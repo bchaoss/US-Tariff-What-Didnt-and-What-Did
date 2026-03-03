@@ -10,12 +10,13 @@ title: US Imports
         Non-Tariff Drivers:
 
 - **Golds**: Spikes in Jan & Jul 2025 driven by rising gold prices and increased demand for safe-haven assets amid global economic uncertainties.
-- **Petroleum**: Continuous decline due to low crude oil prices.
+- **Petroleum**: Continuous decline due to low crude [oil prices](https://www.macrotrends.net/2483/brent-crude-oil-price-history) in 2025.
 
 <Grid cols=2>
 <BarChart 
     title="Gold"
-    yAxisTitle="Import Value"
+    subtitle="Import Value"
+    yAxisTitle="USD"
     xAxisTitle="per month"
     data={monthly_import_Gold}
     x="monthly"
@@ -30,7 +31,8 @@ title: US Imports
 
 <LineChart 
     title="Petroleum"
-    yAxisTitle="Import Value"
+    subtitle="Import Value"
+    yAxisTitle="USD"
     xAxisTitle="per month"
     data={monthly_import_Petroleum}
     x="monthly"
@@ -77,7 +79,8 @@ group by all
 <Grid cols=3>
 <BarChart 
     title="Pharma"
-    yAxisTitle="Import Value"
+    subtitle="Import Value"
+    yAxisTitle="USD"
     xAxisTitle="per month"
     data={monthly_import_Pharma}
     x="monthly"
@@ -92,7 +95,8 @@ group by all
 
 <BarChart 
     title="Finished Metal Shapes"
-    yAxisTitle="Import Value"
+    subtitle="Import Value"
+    yAxisTitle="USD"
     xAxisTitle="per month"
     data={monthly_import_FinishedMetal}
     x="monthly"
@@ -107,7 +111,8 @@ group by all
 
 <BarChart 
     title="Copper"
-    yAxisTitle="Import Value"
+    subtitle="Import Value"
+    yAxisTitle="USD"
     xAxisTitle="per month"
     data={monthly_import_Copper}
     x="monthly"
@@ -156,13 +161,14 @@ group by all
         Structural Increases:
 
 - **Computers & Accessories:**
-    Strong growth throughout 2025, with a notable surge in Q4. The increase is likely driven by demand for AI infrastructure, as long as tariff-exempted. (Notably, cell-phones which are also tariff-exempted, saw anegative YoY.)
+    Strong growth throughout 2025, with a notable surge in Q4. The increase is likely driven by demand for AI infrastructure, and tariff-exempted. (Notably, cell-phones which are also tariff-exempted, saw anegative YoY.)
 - **Telecommunications Equipment:** Consistent growth similar to computers.
 
 <Grid cols=2>
 <LineChart 
     title="Computers & Accessories"
-    yAxisTitle="Import Value"
+    subtitle="Import Value"
+    yAxisTitle="USD"
     xAxisTitle="per month"
     data={monthly_import_Computer}
     x="monthly"
@@ -176,7 +182,8 @@ group by all
 
 <LineChart 
     title="Telecommunications Equipment"
-    yAxisTitle="Import Value"
+    subtitle="Import Value"
+    yAxisTitle="USD"
     xAxisTitle="per month"
     data={monthly_import_Telecom}
     x="monthly"
@@ -220,8 +227,9 @@ group by all
 
 <Grid cols=2>
 <LineChart 
-    title="Consumer Goods - Others"
-    yAxisTitle="Import Value"
+    title="Consumer Goods *"
+    subtitle="Import Value"
+    yAxisTitle="USD"
     xAxisTitle="per month"
     data={monthly_import_Consumer}
     x="monthly"
@@ -235,7 +243,8 @@ group by all
 
 <LineChart 
     title="Automotive"
-    yAxisTitle="Import Value"
+    subtitle="Import Value"
+    yAxisTitle="USD"
     xAxisTitle="per month"
     data={monthly_import_Automotive}
     x="monthly"
@@ -274,15 +283,16 @@ group by all
 - Capital Goods (excluding Computers and Telecommunications equipment)
 - Food, Feeds & Beverage
 
-    <!-- 
-    - Spotlight:
-        - Iron & Steel
-        - Gem diamonds & stones
-
+<!-- 
+- Spotlight:
+- Iron & Steel
+- Gem diamonds & stones
+-->
 <Grid cols=3>
 <LineChart 
     title="Industrial Goods *"
-    yAxisTitle="Import Value"
+    subtitle="Import Value"
+    yAxisTitle="USD"
     xAxisTitle="per month"
     data={monthly_import_Industrial}
     x="monthly"
@@ -295,7 +305,8 @@ group by all
 />
 <LineChart 
     title="Capital Goods *"
-    yAxisTitle="Import Value"
+    subtitle="Import Value"
+    yAxisTitle="USD"
     xAxisTitle="per month"
     data={monthly_import_Capital}
     x="monthly"
@@ -308,7 +319,8 @@ group by all
 />
 <LineChart 
     title="Food, Feeds & Beverage"
-    yAxisTitle="Import Value"
+    subtitle="Import Value"
+    yAxisTitle="USD"
     xAxisTitle="per month"
     data={monthly_import_Food}
     x="monthly"
@@ -320,6 +332,7 @@ group by all
     colorPalette={['#a4b3bc', '#758ea2', '#3292b2']}
 />
 </Grid>
+
 ```sql monthly_import_Industrial
 select 
 	year,
@@ -375,8 +388,7 @@ group by all
     series="enduse_detail"
     xFmt="yyyy-mmm"
     yFmt="pct1"
-    yGridlines=false
->
+    yGridlines=false>
     <ReferencePoint data={monthly_import_change_ttl} x=monthly y=pct_change labelPosition=bottom align=right />
 </BarChart>
 
