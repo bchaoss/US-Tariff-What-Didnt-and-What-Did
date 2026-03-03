@@ -116,7 +116,10 @@ jobs:
   trigger-reports-workflow:
     needs: [detect, run-dbt-pipeline]
     if: |
+      always() &&
       github.event_name == 'push' &&
+      needs.detect.result == 'success' &&
+      (needs.run-dbt-pipeline.result == 'success' || needs.run-dbt-pipeline.result == 'skipped') &&
       (
         needs.detect.outputs.pipeline_changed == 'true' ||
         needs.detect.outputs.reports_changed == 'true'
