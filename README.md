@@ -13,7 +13,7 @@
 
 - [U.S. Bureau of Labor Statistics](https://www.bls.gov/)
 
-Or, Use my transfered dataset in `MotherDuck` by the share link:
+Or, Use my transformed dataset in `MotherDuck` by the share link:
 
 ```sql
 -- Run this snippet to attach database in MotherDuck
@@ -37,7 +37,9 @@ ATTACH 'md:_share/us_tariff/5e5d7ce4-fe48-487a-a05f-2dd92e9ac43d';
 Dependences: 
 [dbt](https://www.getdbt.com/), [duckdb](https://duckdb.org/) ([MotherDuck](https://www.motherduck.com/)), [Evidence BI](https://github.com/evidence-dev/evidence?tab=readme-ov-file).
 
-Clone the repository and set up the development environment by `.devcontainer`, then run the following commands to build the data pipeline and reports:
+Clone the repository and Create a `MotherDuck` account, add access token into repository secret.
+
+Set up the development environment by `.devcontainer`, then run the following commands to build the data pipeline and reports:
 
 ### dbt Pipeline
 ```bash

@@ -4,7 +4,7 @@ title: US Imports
 
 # How US Import Trends Shaped in 2025?
 
-## Macro economic, front-loading surge, and structural increasing categoies were adding dymamics to the US imports.
+## Macro economic, front-tariff loading surge, and structural increasing categoies were adding fluctuations to the US imports.
 <Tabs>
     <Tab label="Non-Tariff Driver">
         Non-Tariff Drivers:
@@ -64,7 +64,7 @@ group by all
 ```
 
     </Tab>
-    <Tab label="Front-loading">
+    <Tab label="Front-tariff Loading">
         Front-loading (surge in pre-tariff -> back to baseline):
 
 - **Pharma:**
@@ -213,9 +213,9 @@ group by all
 </Tabs>
 
 
+## Tariff pressured on most of Consumer Goods and Automotive categories were declining continuously after Apr. 2025.
 
-## Under tariffs impact, 
-- Consumer goods Others
+- Consumer Goods (excluding Pharma)
 - Automotive
 
 <Grid cols=2>
@@ -268,14 +268,20 @@ where enduse_detail = 'Automotive'
 group by all
 ```
 
-    <!-- - Industrial Others
+## Industrial, Capital Goods and Food & Beverage categories showed resilience under the tariffs, after excluding the Golds, front-traiff surge or structural increase of  some sub-categories.
+
+- Industrial Goods (excluding Golds, Petroleum, Finished Metal Shapes, and Copper)
+- Capital Goods (excluding Computers and Telecommunications equipment)
+- Food, Feeds & Beverage
+
+    <!-- 
     - Spotlight:
         - Iron & Steel
         - Gem diamonds & stones
 
 <Grid cols=3>
 <LineChart 
-    title="Industrial Goods - Others"
+    title="Industrial Goods *"
     yAxisTitle="Import Value"
     xAxisTitle="per month"
     data={monthly_import_Industrial}
@@ -287,13 +293,64 @@ group by all
     yGridlines=false
     colorPalette={['#a4b3bc', '#758ea2', '#3292b2']}
 />
+<LineChart 
+    title="Capital Goods *"
+    yAxisTitle="Import Value"
+    xAxisTitle="per month"
+    data={monthly_import_Capital}
+    x="monthly"
+    y=gen_value
+    series="year"
+    xFmt="mmm"
+    yFmt="usd1b"
+    yGridlines=false
+    colorPalette={['#a4b3bc', '#758ea2', '#3292b2']}
+/>
+<LineChart 
+    title="Food, Feeds & Beverage"
+    yAxisTitle="Import Value"
+    xAxisTitle="per month"
+    data={monthly_import_Food}
+    x="monthly"
+    y=gen_value
+    series="year"
+    xFmt="mmm"
+    yFmt="usd1b"
+    yGridlines=false
+    colorPalette={['#a4b3bc', '#758ea2', '#3292b2']}
+/>
 </Grid>
-- **Limited change:**
-    - Aluminum
-    - Cell phones -->
+```sql monthly_import_Industrial
+select 
+	year,
+    monthly,
+	sum(gen_value) as gen_value,
+from monthly_import
+where enduse_detail = 'Industrial - Others'
+group by all
+```
 
+```sql monthly_import_Capital
+select 
+	year,
+    monthly,
+	sum(gen_value) as gen_value,
+from monthly_import
+where enduse_detail = 'Capital Goods - Others'
+group by all
+```
 
-# YoY Breakdown of US Import Trends
+```sql monthly_import_Food
+select 
+	year,
+    monthly,
+	sum(gen_value) as gen_value,
+from monthly_import
+where enduse_detail = 'Foods & Bev'
+group by all
+```
+
+# YoY Breakdown of US Import Trends, by End Use Categories
 
 <LineChart 
     title="US Goods Import Value"
