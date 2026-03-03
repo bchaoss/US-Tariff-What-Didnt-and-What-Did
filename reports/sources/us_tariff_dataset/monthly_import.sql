@@ -42,7 +42,7 @@ select
 	case when enduse_detail in ('Gold', 'Petroleum') then 'Non-Tariff Drivers'
 		when enduse_detail in ('Pharma', 'Finished metal shapes', 'Copper') then 'Front-loading'
 		when enduse_detail in ('Computers & Accessories', 'Telecom') then 'Structural Increase'
-		when eu1_code in ('3', '4') then 'Consumer & Automotive *'
+		when eu1_code in ('3', '4') then 'Consumer Goods & Automotive *'
 		else 'Others (Industrial, Capital Goods, Foods & Bev)'
 	end AS role,
 

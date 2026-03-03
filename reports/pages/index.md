@@ -92,31 +92,32 @@ select
 group by all
 ```
 
-To better understand these dynamics, we should break down the import and export values separately.
+To better understand these dynamics, let's break down the import and export values separately.
 
-### Imports
+### How US Imports Reacted
 
 There are several distinct factors shaped US import trend in 2025:
 
-- **Non-Tariff Drivers:** Golds (spikes in Jan & Jul); Petroleum (continuous decline due to low crude oil prices);
+- **Non-Tariff Drivers:** Golds (spikes in Jan & Jul); Petroleum (continuous decline due to low crude oil prices in 2025);
 - **Front-loading (surge in pre-tariff -> back to baseline):** Pharma (Q1); Finished metal shapes (Q1); Copper (Apr - Aug);
 - **Structural Increases:** Computers (tariff-exempted) & Telecommunications equipment's strong growth. 
-    <Note>(It's likely driven by demand for AI infrastructure, as cell-phones which are also tariff-exempted, saw anegative YoY.)</Note>
+    <Note>(It's likely driven by demand for AI infrastructure, as cell-phones which are also tariff-exempted, saw negative YoY.)</Note>
 
 <BarChart 
-    title="YoY $Changes in US Goods Import Value, by Reason"
+    title="YoY Changes in US Goods Import Value $, by Reason"
     subtitle="relative to 2023-24 avg."
+    yAxisTitle="USD"
     xAxisTitle="per month"
     data={monthly_import_change}
     x="monthly"
     y=change
     series="reason"
-    seriesOrder={['Non-Tariff Drivers', 'Front-loading', 'Structural Increase', 'Consumer & Automotive *', 'Others (Industrial, Capital Goods, Foods & Bev)']}
+    seriesOrder={['Non-Tariff Drivers', 'Front-loading', 'Structural Increase', 'Consumer Goods & Automotive *', 'Others (Industrial, Capital Goods, Foods & Bev)']}
     seriesColors={{
         'Non-Tariff Drivers': '#8dacbf', 
         'Front-loading': '#a4b3bc', 
         'Structural Increase': '#3292b2', 
-        'Consumer & Automotive *': '#f4a261', 
+        'Consumer Goods & Automotive *': '#f4a261', 
         'Others (Industrial, Capital Goods, Foods & Bev)': '#a5cdee'}}
     xFmt="yyyy-mmm"
     yFmt="usd1b"
@@ -177,7 +178,7 @@ select
 
 See the details about US import trends [here](us_imports).
 
-### Exports
+### How US Exports Reacted
 
 
 See detailed US exports by country chart [here](us_exports).
@@ -192,6 +193,7 @@ Starting in March 2025, US customs duties increased, and have been >$20 billion 
 <Grid cols=2>
 <LineChart
     title="US Customs Duties, Yearly "
+    yAxisTitle="USD"
     xAxisTitle="per month"
     data={monthly_treasury_tariff_yoy}
     x="monthly"
@@ -206,7 +208,7 @@ Starting in March 2025, US customs duties increased, and have been >$20 billion 
 <BarChart 
     title="Change in US Customs Duties"
     subtitle="relative to 2023-2024 average"
-    yAxisTitle="Difference from previous years"
+    yAxisTitle="USD"
     xAxisTitle="per month"
     data={monthly_treasury_diff_tariff}
     x=monthly
@@ -223,13 +225,14 @@ Starting in March 2025, US customs duties increased, and have been >$20 billion 
 </Grid>
 
 
-### **It accounts for a small share of the US government's total fiscal receipts.**
+### **It accounts for a small share of the total US fiscal receipts.**
 
-Though the threefold increase in collections has made tariffs become a primary source of fiscal growth.
+Though the threefold increase in collections has made tariffs become a primary source of government's fiscal growth.
 
 <Grid cols=2>
 <AreaChart 
     title="Share of Customs Duties in US Fiscal Receipt"
+    subtitle="from 2% to 8% after tariff implementation"
     data={monthly_treasury_receipt_share}
     x=month_begin_date
     y=receipt_amount
@@ -242,6 +245,9 @@ Though the threefold increase in collections has made tariffs become a primary s
 />
 
 <BarChart
+    title="Change in US Fiscal Receipt, by Source"
+    yAxisTitle="USD"
+    subtitle="relative to 2023-2024 average"
     data={monthly_treasury_diff}
     x=month_begin_date
     y=diff_vs_2324avg
