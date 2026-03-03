@@ -98,9 +98,9 @@ To better understand these dynamics, we should break down the import and export 
 
 There are several distinct factors shaped US import trend in 2025:
 
-- Non-Tariff Drivers: Golds (spikes in Jan & Jul); Petroleum (continuous decline due to low crude oil prices);
-- Front-loading (surge in pre-tariff -> back to baseline): Pharma (Q1); Finished metal shapes (Q1); Copper (Apr - Aug);
-- Structural Increases: Computers (tariff-exempted) & Telecommunications equipment's strong growth. 
+- **Non-Tariff Drivers:** Golds (spikes in Jan & Jul); Petroleum (continuous decline due to low crude oil prices);
+- **Front-loading (surge in pre-tariff -> back to baseline):** Pharma (Q1); Finished metal shapes (Q1); Copper (Apr - Aug);
+- **Structural Increases:** Computers (tariff-exempted) & Telecommunications equipment's strong growth. 
     <Note>(It's likely driven by demand for AI infrastructure, as cell-phones which are also tariff-exempted, saw anegative YoY.)</Note>
 
 <BarChart 
@@ -126,7 +126,9 @@ There are several distinct factors shaped US import trend in 2025:
     <ReferencePoint data={monthly_import_change_ttl} x=monthly y=change labelPosition=bottom align=right />
 </BarChart>
 
-Apart from the above, US imports of most consumer goods and automotive declined significantly under tariff pressure. Conversely, industrial, capital goods, and food categories swere affected to a limited extent.
+Apart from the above, US imports of most **consumer goods** and **automotive** declined significantly under tariff pressure. 
+
+Conversely, industrial, capital goods, and food categories swere affected to a limited extent.
 
 ```sql monthly_import_change
 with cte AS (
