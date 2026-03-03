@@ -2,8 +2,10 @@ from marts.fact_us_trade_exports_country_monthly
 
 select 
   export_type,
-  REGION_NAME AS region,
-  CTY_NAME AS country,
+  case when export_code = 'F' then '-'
+		else REGION_NAME end AS region,
+  case when export_code = 'F' then '-'
+		else CTY_NAME end AS country,
 
 	month_begin_date,
 	year, 
