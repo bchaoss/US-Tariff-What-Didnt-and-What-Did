@@ -101,7 +101,7 @@ There are several distinct factors shaped US import trend in 2025:
 - **Non-Tariff Drivers:** Golds (spikes in Jan & Jul); Petroleum (continuous decline due to low crude oil prices in 2025);
 - **Front-loading (surge in pre-tariff -> back to baseline):** Pharma (Q1); Finished metal shapes (Q1); Copper (Apr - Aug);
 - **Structural Increases:** Computers (tariff-exempted) & Telecommunications equipment's strong growth. 
-    <Note>(It's likely driven by demand for AI infrastructure, as cell-phones which are also tariff-exempted, saw negative YoY.)</Note>
+    (It's likely driven by demand for AI infrastructure, as cell-phones which are also tariff-exempted, saw negative YoY.)
 
 <BarChart 
     title="YoY Changes in US Goods Import Value $, by Reason"
@@ -127,7 +127,7 @@ There are several distinct factors shaped US import trend in 2025:
     <ReferencePoint data={monthly_import_change_ttl} x=monthly y=change labelPosition=bottom align=right />
 </BarChart>
 
-Apart from the above, US imports of most **consumer goods** and **automotive** declined significantly under tariff pressure. 
+Apart from the above, US imports of most **Consumer Goods** and **Automotive** declined significantly under tariff pressure. 
 
 Conversely, industrial, capital goods, and food categories swere affected to a limited extent.
 
@@ -147,14 +147,6 @@ select
     monthly,
     role AS reason,
     value_25 - value_2324 AS change,
-
-    round( (value_25 / value_2324 *1.0) - 1.0, 5) AS pct_change,
-
-    value_2324,
-    SUM(value_2324) OVER (PARTITION BY monthly) as enduse_ttl,
-    value_2324 / SUM(value_2324) OVER (PARTITION BY monthly) AS mix_byenduse,
-
-    round( (value_25 / value_2324 *1.0) - 1.0, 5) * (value_2324 / SUM(value_2324) OVER (PARTITION BY monthly)) AS pct_change_mixin,
 order by 1,2
 ```
 
@@ -180,8 +172,81 @@ See the details about US import trends [here](us_imports).
 
 ### How US Exports Reacted
 
+There are more complicated in the exports side:
 
-See detailed US exports by country chart [here](us_exports).
+First, the main changer is Gold and Pharma. After surge in purchase it, US company and people started sold them in Q4. Gold is mainly go to SWITZERLAND and UK; Pharma is mainly to Italy and other EU country.
+
+Then we want to seperate the re-export, since it represents the America role as a logstic center, instead of US goods exports.
+
+Finaly we got the chance to divide the decreaser and increaser:
+
+- decreaser: mainly China, then Canada, Mexico and Singapore
+- increaser: Eupore countries, Other ASIA countries.
+
+<BarChart 
+    title="YoY Changes in US Goods Export Value $, by Category, Export Type and Country"
+    subtitle="relative to 2023-24 avg."
+    yAxisTitle="USD"
+    xAxisTitle="per month"
+    data={monthly_export_change}
+    x="monthly"
+    y=change
+    series="reason"
+    seriesOrder={['Gold & Pharma', 'Re-Export', 'CHINA', 'CANADA', 'MEXICO', 'Rest of World']}
+    seriesColors={{
+        'Gold & Pharma': '#e8c84a',
+        'Re-Export':     '#6dbfb8',
+        'CHINA':         '#e05c4b',
+        'CANADA':        '#d4784a',
+        'MEXICO':        '#c9944f',
+        'Rest of World': '#3a7fb5'
+        }}
+    xFmt="yyyy-mmm"
+    yFmt="usd1b"
+    yGridlines=false
+    chartAreaHeight=260
+>
+    <ReferencePoint data={monthly_export_change_ttl} x=monthly y=change labelPosition=bottom align=right />
+</BarChart>
+
+
+```sql monthly_export_change
+with cte AS (
+select
+    monthly,
+    reason,
+    sum(case when year=2025 then all_value*1.0 else 0 end) as value_25,
+    sum(case when year<2025 then all_value*1.0 else 0 end)/2.0 as value_2324,
+from monthly_export
+where 1=1
+group by all
+)
+from cte c
+select 
+    monthly,
+    reason,
+    value_25 - value_2324 AS change,
+order by 1,2
+```
+
+```sql monthly_export_change_ttl
+with cte AS (
+    from monthly_export
+    select
+        monthly,
+        sum(case when year=2025 then all_value else 0 end) as value_25,
+        sum(case when year<>2025 then all_value else 0 end)/2.0 as value_2324,
+    where 1=1
+    group by all
+)
+from cte c
+select 
+    monthly,
+    value_25 - value_2324 AS change,
+    round( (value_25 / value_2324 *1.0) - 1.0, 5) AS pct_change,
+```
+
+See the details about US export trends [here](us_exports).
 
 
 # What Trump's Tariffs Did Do, and Yet the Reality.
@@ -227,7 +292,7 @@ Starting in March 2025, US customs duties increased, and have been >$20 billion 
 
 ### **It accounts for a small share of the total US fiscal receipts.**
 
-Though the threefold increase in collections has made tariffs become a primary source of government's fiscal growth.
+However, the threefold increase in collections has made tariffs become a primary source of government's fiscal growth.
 
 <Grid cols=2>
 <AreaChart 
@@ -260,6 +325,13 @@ Though the threefold increase in collections has made tariffs become a primary s
 </Grid>
 
 
+Tariffs have led to higher prices for consumer goods, and the way of collecting from US consumers and importers actually functions as a consumption tax. According to [a White House study in 2024](https://archive.ph/e6NMH), tariffs introduce a new form of regressive tax, further burdening consumers who spend a high proportion of their income on goods.
+
+<Image 
+    url="tariff_regressive.webp"
+    description="tariff_regressive"
+    height=500
+/>
 
 ```sql monthly_treasury_base
 select 
