@@ -10,25 +10,6 @@ models:
     config:
       tags: ['fact', 'treasury']
 
-  - name: dim_labor_series
-    description: 'desc'
-    columns:
-      - name: series_id
-        tests:
-          - unique
-          - not_null
-    config:
-      tags: ['static', 'dim', 'labor']
-
-  - name: fact_us_manufacturing_employees_monthly
-    description: 'desc'
-    columns:
-      - name: series_id
-        tests:
-          - not_null
-    config:
-      tags: ['fact', 'labor']
-
   - name: dim_enduse_code_export
     description: 'desc'
     config:
