@@ -1,7 +1,6 @@
 ---
 title: What didn't and what did the Trump's Tariff do?
 ---
-To the USA and the world.
 
 <!--
 Markdown can be used to write expressively in text.
@@ -11,9 +10,9 @@ Markdown can be used to write expressively in text.
 - links to [external sites](https://google.com) and other [Evidence pages](/another/page)
 -->
 
-# What Trump's Tariffs Didn't Do
+<!-- # What Trump's Tariffs Didn't Do -->
 
-## Did Trump's tariffs reduce the US trade deficit of goods?
+# Did Trump's tariffs reduce the US trade deficit of goods?
 
 The US trade deficit fluctuated significantly throughout 2025.
 
@@ -26,6 +25,7 @@ The US trade deficit fluctuated significantly throughout 2025.
     data={monthly_trade_deficit}
     x=month_begin_date
     y={['import', 'export']}
+    lineWeight=4
     y2=deficit
     y2SeriesType=bar
     xFmt="mmm yyyy"
@@ -33,7 +33,7 @@ The US trade deficit fluctuated significantly throughout 2025.
     y2Fmt="usd1b"
     yGridlines=false
     y2Gridlines=false
-    seriesColors={{'import': '#f4a261', 'export': '#3292b2', 'deficit': '#f4a261'}}
+    seriesColors={{'Import': '#d98643', 'Export': '#3292b2', 'Deficit': '#a9b5bd'}}
     chartAreaHeight=240
 />
 </Grid>
@@ -94,7 +94,7 @@ group by all
 
 To better understand these dynamics, let's break down the import and export values separately.
 
-### How US Imports Reacted
+## How US Imports Reacted
 
 There are several distinct factors shaped US import trend in 2025:
 
@@ -170,18 +170,15 @@ select
 
 See the details about US import trends [here](us_imports).
 
-### How US Exports Reacted
+## How US Exports Reacted
 
 There are more complicated in the exports side:
 
-First, the main changer is Gold and Pharma. After surge in purchase it, US company and people started sold them in Q4. Gold is mainly go to SWITZERLAND and UK; Pharma is mainly to Italy and other EU country.
+- **Gold & Pharma**: After pre-tariffs surge, US exporters started selling them off mainly in Q4. Gold was mainly sold to Switzerland and the UK; Pharma were mainly sold to Italy and other EU countries.
+- **Re-Export**: We list re-exports separately because it represents the role of the American as a logistics hub, rather than the export of goods by the US.
+- **Countries where US exports declined**: Mainly China, then Canada, Mexico and Singapore.
+- **Countries where US exports increased**: Europe countries, Other ASIA countries, etc.
 
-Then we want to seperate the re-export, since it represents the America role as a logstic center, instead of US goods exports.
-
-Finaly we got the chance to divide the decreaser and increaser:
-
-- decreaser: mainly China, then Canada, Mexico and Singapore
-- increaser: Eupore countries, Other ASIA countries.
 
 <BarChart 
     title="YoY Changes in US Goods Export Value $, by Category, Export Type and Country"
@@ -248,10 +245,11 @@ select
 
 See the details about US export trends [here](us_exports).
 
+## Adding Them Together
 
-# What Trump's Tariffs Did Do, and Yet the Reality.
+<!-- # What Trump's Tariffs Did Do, and Yet the Reality. -->
 
-## Well, Trump's tariffs did increase US fiscal revenue...
+# Well, Trump's tariffs did increase US fiscal revenue...
 
 Starting in March 2025, US customs duties increased, and have been >$20 billion higher per month since June 2025, compared with the 2023-2024 average for the same month.
 
@@ -290,9 +288,9 @@ Starting in March 2025, US customs duties increased, and have been >$20 billion 
 </Grid>
 
 
-### **It accounts for a small share of the total US fiscal receipts.**
+## **It became a primary grouth source of US fiscal receipts.**
 
-However, the threefold increase in collections has made tariffs become a primary source of government's fiscal growth.
+Altough tariffs only accounts for a small share of the total US fiscal receipts, the threefold increase in collections has made it become a primary source of government's fiscal growth.
 
 <Grid cols=2>
 <AreaChart 
@@ -324,8 +322,9 @@ However, the threefold increase in collections has made tariffs become a primary
 />
 </Grid>
 
+## Tariffs function as a regressive tax on US consumers.
 
-Tariffs have led to higher prices for consumer goods, and the way of collecting from US consumers and importers actually functions as a consumption tax. According to [a White House study in 2024](https://archive.ph/e6NMH), tariffs introduce a new form of regressive tax, further burdening consumers who spend a high proportion of their income on goods.
+Tariffs have led to higher prices for consumer goods, and the way of collecting from US consumers and importers actually functions as a consumption tax. According to [a White House study in 2024](https://archive.ph/e6NMH) <Info description="The original reference link on the White House website is no longer valid; however, thanks to the Internet Archive."/>, tariffs introduce a new form of regressive tax, further burdening consumers who spend a high proportion of their income on goods.
 
 <Image 
     url="tariff_regressive.webp"
