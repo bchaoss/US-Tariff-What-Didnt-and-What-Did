@@ -363,6 +363,51 @@ where enduse_detail = 'Foods & Bev'
 group by all
 ```
 
+## Summary
+
+<BarChart 
+    title="YoY Changes in US Goods Import Value $, by Reason"
+    subtitle="relative to 2023-24 avg."
+    yAxisTitle="USD"
+    xAxisTitle="per month"
+    data={monthly_import_change_reason}
+    x="monthly"
+    y=change
+    series="reason"
+    seriesOrder={['Non-Tariff Drivers', 'Front-loading', 'Structural Increase', 'Consumer Goods & Automotive *', 'Others (Industrial, Capital Goods, Foods & Bev)']}
+    seriesColors={{
+        'Non-Tariff Drivers': '#8dacbf', 
+        'Front-loading': '#a4b3bc', 
+        'Structural Increase': '#3292b2', 
+        'Consumer Goods & Automotive *': '#f4a261', 
+        'Others (Industrial, Capital Goods, Foods & Bev)': '#a5cdee'}}
+    xFmt="yyyy-mmm"
+    yFmt="usd1b"
+    yGridlines=false
+    chartAreaHeight=260
+>
+    <ReferencePoint data={monthly_import_change_ttl} x=monthly y=change labelPosition=bottom align=right />
+</BarChart>
+
+```sql monthly_import_change_reason
+with cte AS (
+select
+    monthly,
+    role,
+    sum(case when year=2025 then gen_value*1.0 else 0 end) as value_25,
+    sum(case when year<2025 then gen_value*1.0 else 0 end)/2.0 as value_2324,
+from monthly_import
+where 1=1
+group by all
+)
+from cte c
+select 
+    monthly,
+    role AS reason,
+    value_25 - value_2324 AS change,
+order by 1,2
+```
+
 # YoY Breakdown of US Import Trends, by End Use Categories
 
 <LineChart 

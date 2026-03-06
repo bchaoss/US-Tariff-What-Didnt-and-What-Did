@@ -1,7 +1,6 @@
 ---
 title: What didn't and what did the Trump's Tariff do?
 ---
-To the USA and the world.
 
 <!--
 Markdown can be used to write expressively in text.
@@ -11,9 +10,9 @@ Markdown can be used to write expressively in text.
 - links to [external sites](https://google.com) and other [Evidence pages](/another/page)
 -->
 
-# What Trump's Tariffs Didn't Do
+<!-- # What Trump's Tariffs Didn't Do -->
 
-## Did Trump's tariffs reduce the US trade deficit of goods?
+# Did Trump's tariffs reduce the US trade deficit of goods?
 
 The US trade deficit fluctuated significantly throughout 2025.
 
@@ -26,6 +25,7 @@ The US trade deficit fluctuated significantly throughout 2025.
     data={monthly_trade_deficit}
     x=month_begin_date
     y={['import', 'export']}
+    lineWeight=4
     y2=deficit
     y2SeriesType=bar
     xFmt="mmm yyyy"
@@ -33,7 +33,7 @@ The US trade deficit fluctuated significantly throughout 2025.
     y2Fmt="usd1b"
     yGridlines=false
     y2Gridlines=false
-    seriesColors={{'import': '#f4a261', 'export': '#3292b2', 'deficit': '#f4a261'}}
+    seriesColors={{'Import': '#d98643', 'Export': '#3292b2', 'Deficit': '#a9b5bd'}}
     chartAreaHeight=240
 />
 </Grid>
@@ -94,14 +94,14 @@ group by all
 
 To better understand these dynamics, let's break down the import and export values separately.
 
-### How US Imports Reacted
+## How US Imports Reacted
 
 There are several distinct factors shaped US import trend in 2025:
 
 - **Non-Tariff Drivers:** Golds (spikes in Jan & Jul); Petroleum (continuous decline due to low crude oil prices in 2025);
 - **Front-loading (surge in pre-tariff -> back to baseline):** Pharma (Q1); Finished metal shapes (Q1); Copper (Apr - Aug);
 - **Structural Increases:** Computers (tariff-exempted) & Telecommunications equipment's strong growth. 
-    <Note>(It's likely driven by demand for AI infrastructure, as cell-phones which are also tariff-exempted, saw negative YoY.)</Note>
+    (It's likely driven by demand for AI infrastructure, as cell-phones which are also tariff-exempted, saw negative YoY.)
 
 <BarChart 
     title="YoY Changes in US Goods Import Value $, by Reason"
@@ -127,7 +127,7 @@ There are several distinct factors shaped US import trend in 2025:
     <ReferencePoint data={monthly_import_change_ttl} x=monthly y=change labelPosition=bottom align=right />
 </BarChart>
 
-Apart from the above, US imports of most **consumer goods** and **automotive** declined significantly under tariff pressure. 
+Apart from the above, US imports of most **Consumer Goods** and **Automotive** declined significantly under tariff pressure. 
 
 Conversely, industrial, capital goods, and food categories swere affected to a limited extent.
 
@@ -147,14 +147,6 @@ select
     monthly,
     role AS reason,
     value_25 - value_2324 AS change,
-
-    round( (value_25 / value_2324 *1.0) - 1.0, 5) AS pct_change,
-
-    value_2324,
-    SUM(value_2324) OVER (PARTITION BY monthly) as enduse_ttl,
-    value_2324 / SUM(value_2324) OVER (PARTITION BY monthly) AS mix_byenduse,
-
-    round( (value_25 / value_2324 *1.0) - 1.0, 5) * (value_2324 / SUM(value_2324) OVER (PARTITION BY monthly)) AS pct_change_mixin,
 order by 1,2
 ```
 
@@ -178,15 +170,86 @@ select
 
 See the details about US import trends [here](us_imports).
 
-### How US Exports Reacted
+## How US Exports Reacted
+
+There are more complicated in the exports side:
+
+- **Gold & Pharma**: After pre-tariffs surge, US exporters started selling them off mainly in Q4. Gold was mainly sold to Switzerland and the UK; Pharma were mainly sold to Italy and other EU countries.
+- **Re-Export**: We list re-exports separately because it represents the role of the American as a logistics hub, rather than the export of goods by the US.
+- **Countries where US exports declined**: Mainly China, then Canada, Mexico and Singapore.
+- **Countries where US exports increased**: Europe countries, Other ASIA countries, etc.
 
 
-See detailed US exports by country chart [here](us_exports).
+<BarChart 
+    title="YoY Changes in US Goods Export Value $, by Category, Export Type and Country"
+    subtitle="relative to 2023-24 avg."
+    yAxisTitle="USD"
+    xAxisTitle="per month"
+    data={monthly_export_change}
+    x="monthly"
+    y=change
+    series="reason"
+    seriesOrder={['Gold & Pharma', 'Re-Export', 'CHINA', 'CANADA', 'MEXICO', 'Rest of World']}
+    seriesColors={{
+        'Gold & Pharma': '#e8c84a',
+        'Re-Export':     '#6dbfb8',
+        'CHINA':         '#e05c4b',
+        'CANADA':        '#d4784a',
+        'MEXICO':        '#c9944f',
+        'Rest of World': '#3a7fb5'
+        }}
+    xFmt="yyyy-mmm"
+    yFmt="usd1b"
+    yGridlines=false
+    chartAreaHeight=260
+>
+    <ReferencePoint data={monthly_export_change_ttl} x=monthly y=change labelPosition=bottom align=right />
+</BarChart>
 
 
-# What Trump's Tariffs Did Do, and Yet the Reality.
+```sql monthly_export_change
+with cte AS (
+select
+    monthly,
+    reason,
+    sum(case when year=2025 then all_value*1.0 else 0 end) as value_25,
+    sum(case when year<2025 then all_value*1.0 else 0 end)/2.0 as value_2324,
+from monthly_export
+where 1=1
+group by all
+)
+from cte c
+select 
+    monthly,
+    reason,
+    value_25 - value_2324 AS change,
+order by 1,2
+```
 
-## Well, Trump's tariffs did increase US fiscal revenue...
+```sql monthly_export_change_ttl
+with cte AS (
+    from monthly_export
+    select
+        monthly,
+        sum(case when year=2025 then all_value else 0 end) as value_25,
+        sum(case when year<>2025 then all_value else 0 end)/2.0 as value_2324,
+    where 1=1
+    group by all
+)
+from cte c
+select 
+    monthly,
+    value_25 - value_2324 AS change,
+    round( (value_25 / value_2324 *1.0) - 1.0, 5) AS pct_change,
+```
+
+See the details about US export trends [here](us_exports).
+
+## Adding Them Together
+
+<!-- # What Trump's Tariffs Did Do, and Yet the Reality. -->
+
+# Well, Trump's tariffs did increase US fiscal revenue...
 
 Starting in March 2025, US customs duties increased, and have been >$20 billion higher per month since June 2025, compared with the 2023-2024 average for the same month.
 
@@ -225,9 +288,9 @@ Starting in March 2025, US customs duties increased, and have been >$20 billion 
 </Grid>
 
 
-### **It accounts for a small share of the total US fiscal receipts.**
+## **It became a primary grouth source of US fiscal receipts.**
 
-Though the threefold increase in collections has made tariffs become a primary source of government's fiscal growth.
+Altough tariffs only accounts for a small share of the total US fiscal receipts, the threefold increase in collections has made it become a primary source of government's fiscal growth.
 
 <Grid cols=2>
 <AreaChart 
@@ -259,7 +322,15 @@ Though the threefold increase in collections has made tariffs become a primary s
 />
 </Grid>
 
+## Tariffs function as a regressive tax on US consumers.
 
+Tariffs have led to higher prices for consumer goods, and the way of collecting from US consumers and importers actually functions as a consumption tax. According to [a White House study in 2024](https://archive.ph/e6NMH) <Info description="The original reference link on the White House website is no longer valid; however, thanks to the Internet Archive."/>, tariffs introduce a new form of regressive tax, further burdening consumers who spend a high proportion of their income on goods.
+
+<Image 
+    url="tariff_regressive.webp"
+    description="tariff_regressive"
+    height=500
+/>
 
 ```sql monthly_treasury_base
 select 

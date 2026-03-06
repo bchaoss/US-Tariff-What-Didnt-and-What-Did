@@ -1,9 +1,0 @@
-version: 2
-
-models:
-  - name: data_manufacturing_employment
-    description: 'desc'
-    columns:
-      - name: series_id
-        tests:
-          - not_null

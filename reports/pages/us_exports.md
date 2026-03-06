@@ -1,11 +1,28 @@
+---
+title: US Exports
+---
+
+
 # Exports
 
+- Gold: UK, Switzerland
+- Pharma: Italy, EUPORE
+- Re-Exports
+- US Exports
+    - Decrease:
+        - China
+        - Canada
+        - Mexico
+        - Singapore
+    - Increase:
+        - EUPORE
+        
 ```sql monthly_export_dim
 select 
     export_type,
     region,
     country,
-	-- year::INT::VARCHAR as year, 
+    category,
 	all_value,
 from monthly_export
 ```
@@ -76,7 +93,7 @@ select
     yGridlines=false
 />
 
-<BarChart 
+<!-- <BarChart 
     title="YoY % Changes in US Goods Export Value"
     subtitle="by Country"
     xAxisTitle="per month"
@@ -89,12 +106,27 @@ select
     yGridlines=false
 >
     <ReferencePoint data={monthly_export_change_ttl} x=monthly y=pct_change labelPosition=bottom align=right />
+</BarChart> -->
+
+<BarChart 
+    title="YoY Changes in US Goods Export Value $"
+    subtitle="by Country"
+    xAxisTitle="per month"
+    data={monthly_export_change}
+    x="monthly"
+    y=change
+    series="country"
+    xFmt="yyyy-mmm"
+    yFmt="usd1b"
+    yGridlines=false
+>
+    <ReferencePoint data={monthly_export_change_ttl} x=monthly y=change labelPosition=bottom align=right />
 </BarChart>
 
 <DimensionGrid 
     data={monthly_export_dim} 
     metric='sum(all_value)' 
     name=multi_dimensions 
-    limit=10
+    limit=15
     multiple
 />

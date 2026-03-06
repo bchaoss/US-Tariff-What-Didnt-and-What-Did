@@ -1,11 +1,29 @@
-from marts.fact_us_trade_exports_country_monthly
+from marts.fact_us_trade_exports_enduse_country_monthly
 
 select 
   export_type,
-  case when export_code = 'F' then '-'
-		else REGION_NAME end AS region,
-  case when export_code = 'F' then '-'
-		else CTY_NAME end AS country,
+
+  REGION_NAME AS region,
+
+  case
+		when CTY_NAME in ('CHINA', 'CANADA', 'MEXICO', 'SINGAPORE'
+											, 'SWITZERLAND', 'ITALY', 'UNITED KINGDOM') 
+		then CTY_NAME
+		when REGION_NAME IN ('ASIA', 'EUROPE') then concat(REGION_NAME, ' Other')
+	else 'Others' end AS country,
+
+	case
+		when enduse_code = '40100' then 'Pharma'
+		when enduse_code = '12260' then 'Gold' 
+		when enduse_code = '61030' then 'RE Gold'
+	else 'Others' end AS category,
+
+	case 
+		when enduse_code IN ('12260', '61030', '40100') then 'Gold & Pharma'
+		when export_type = 'Foreign Export' then 'Re-Export'
+		when CTY_NAME in ('CHINA', 'CANADA', 'MEXICO') then CTY_NAME
+		-- when REGION_NAME IN ('ASIA', 'EUROPE') then concat(REGION_NAME, ' OTHER')		
+	else 'Rest of World' end AS reason,
 
 	month_begin_date,
 	year, 

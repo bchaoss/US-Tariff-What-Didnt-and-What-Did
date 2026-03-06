@@ -6,7 +6,10 @@ left join {{ ref('dim_enduse_code_export') }} c
 
 select 
   a.DF,
-  
+  case when a.DF = '1' then 'Domestic Export'
+    when a.DF = '2' then 'Foreign Export'
+  end AS export_type,
+    
   a.E_ENDUSE AS enduse_code,
   c.eu5_desc AS enduse_desc,
   {% for lvl in levels %}
@@ -23,3 +26,4 @@ select
   {% endfor %}
 
 where a.comm_lvl = 'EU5'
+  and a.DF <> '-'
